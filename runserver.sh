@@ -1,0 +1,1 @@
+uvicorn wsgi:app --reload

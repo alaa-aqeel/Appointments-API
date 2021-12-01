@@ -4,7 +4,6 @@ from sqlalchemy.sql import sqltypes as types
 from sqlalchemy import Column
 from database import SessionLocal, engine
 
-
 class CustomProperty(property):
     
     def __get__(self, _, cls):

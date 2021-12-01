@@ -1,3 +1,5 @@
 .venv/
 __pycache__/
 testdb.py
+*.db
+*.sqlite

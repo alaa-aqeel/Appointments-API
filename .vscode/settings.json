@@ -1,0 +1,12 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:Appointment}/sqlite.db",
+            "name": "sqlite db",
+            "group": "sqlite db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

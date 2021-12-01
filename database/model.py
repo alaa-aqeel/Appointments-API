@@ -1,7 +1,6 @@
-from sqlalchemy import exc
+from sqlalchemy import exc, Column, func, ForeignKey
 from sqlalchemy.ext.declarative import declared_attr, declarative_base
 from sqlalchemy.sql import sqltypes as types
-from sqlalchemy import Column
 from database import SessionLocal, engine
 
 class CustomProperty(property):
@@ -29,7 +28,7 @@ class BaseModel(object):
         return cls.session.query(cls)
 
     @classmethod 
-    def create(cls, **kw:dict) -> list(bool, object):
+    def create(cls, **kw:dict) -> list:
         """Create new raw"""
         try: 
             obj = cls(**kw)
@@ -39,7 +38,7 @@ class BaseModel(object):
         except exc.SQLAlchemyError as err:
             return False, str(err.__dict__.get("orig", ""))
 
-    def save(self) -> list(bool, object):
+    def save(self) -> list:
         """Commit object"""
         try: 
             self.session.add(self)
@@ -53,6 +52,12 @@ class BaseModel(object):
 
         return f"<{self.__class__.__name__}(id={self.id})>"
     
+
+class TimeStamp(object):
+    """Timestamp fields"""
+    
+    created_at = Column(types.TIMESTAMP, server_default=func.now())
+    updated_at = Column(types.TIMESTAMP, server_default=func.now() , server_onupdate=func.now())
 
 Model = declarative_base(cls=BaseModel)
 

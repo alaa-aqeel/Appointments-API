@@ -1,7 +1,9 @@
 from sqlalchemy import exc, Column, func, ForeignKey
 from sqlalchemy.ext.declarative import declared_attr, declarative_base
 from sqlalchemy.sql import sqltypes as types
-from database import SessionLocal, engine
+from sqlalchemy.orm import relationship
+from fastapi import HTTPException
+from database import SessionLocal, engine, schema
 
 class CustomProperty(property):
     """Custom Property To call func"""
@@ -10,10 +12,12 @@ class CustomProperty(property):
         return self.fget(cls)
 
 # Base Model
-class BaseModel(object):
+class BaseModel(schema.BaseSchema):
     """Base Model for  SqlAlchemy Model"""
 
     session:object = SessionLocal()
+
+    __schema__ = None
 
     id:Column = Column(types.Integer, primary_key=True, index=True)
 
@@ -34,9 +38,20 @@ class BaseModel(object):
             obj = cls(**kw)
             cls.session.add(obj)
             cls.session.commit()
-            return True, obj 
+            return obj 
         except exc.SQLAlchemyError as err:
-            return False, str(err.__dict__.get("orig", ""))
+            cls.session.rollback()
+            raise HTTPException(status_code=403, detail=str(err.__dict__.get("orig", "")))
+
+    @classmethod
+    def get(cls, id) -> object:
+        obj = cls.query.get(id)
+        if not obj:
+            raise HTTPException(
+                status_code=404, 
+                detail=f"NOT FOUND {cls.__name__} {id}"
+            )
+        return obj
 
     def save(self) -> list:
         """Commit object"""
@@ -46,8 +61,17 @@ class BaseModel(object):
             self.session.refresh(self)
             return True, self
         except exc.SQLAlchemyError as err:
-            return False, str(err.__dict__.get("orig", ""))
-        
+            self.session.rollback()
+            raise HTTPException(status_code=403, detail=str(err.__dict__.get("orig", "")))
+
+    def update(self, **kw:dict) -> list:
+        try:
+            obj = self.query.filter_by(id=self.id)
+            obj.update(kw)
+            return obj.first()
+        except exc.SQLAlchemyError as err:
+            raise HTTPException(status_code=403, detail=str(err.__dict__.get("orig", "")))
+    
     def __repr__(self) -> str:
 
         return f"<{self.__class__.__name__}(id={self.id})>"

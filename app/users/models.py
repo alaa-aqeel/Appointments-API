@@ -1,9 +1,9 @@
 from database.model import Model, TimeStamp, Column, ForeignKey, types, relationship
-# from users import schemas
+from app.users import schemas
 
 class Role(Model):
 
-    # __schema__ = schemas.Role
+    __schema__ = schemas.RoleReadOnly
 
     name = Column(types.String(45), unique=True)
     desc = Column(types.TEXT) 
@@ -15,7 +15,7 @@ class Role(Model):
 
 class User(Model, TimeStamp):
 
-    # __schema__ = schemas.UserReadOnly
+    __schema__ = schemas.UserReadOnly
 
     username = Column(types.String(45), unique=True)
     password = Column(types.String)
@@ -25,6 +25,7 @@ class User(Model, TimeStamp):
 
     role_id = Column(types.Integer, ForeignKey('role.id'))
     role = relationship(Role, back_populates="users")
+
 
     def set_role(self, roleId: int) -> None:
         self.role = Role.get(roleId)

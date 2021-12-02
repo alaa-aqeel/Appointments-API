@@ -14,17 +14,24 @@ class BaseModel(Model):
             ErrorWrapper(error, loc=fieldname)
         )
 
+
+    # def exce_validate(self):
+    #     print(dir(self))
+
     @classmethod
-    def validate(cls, values):
-        obj = cls(**values)
-        cls._rules_errors = []
-        for rule in obj._rules:
-            rule(obj, values)
+    def validate(cls, value):
+        if isinstance(value, dict):
+            obj = cls(**value)
+            cls._rules_errors = []
+            for rule in obj._rules:
+                rule(obj, value)
 
-        if len(cls._rules_errors):
-            raise ValidationError(cls._rules_errors, cls)
-
-        return obj
+            if len(cls._rules_errors):
+                raise ValidationError(cls._rules_errors, cls)
+                
+            return obj
+        else:
+            return cls.from_orm(value)
 
 
 class BaseSchema():
@@ -36,11 +43,11 @@ class BaseSchema():
         return schema.from_orm(self)
 
     @classmethod  
-    def parse_list(cls, model=None, schema=None):
+    def parse_all(cls, model: object=None, schema: object =None) -> object:
         """Parse model orm to Pydantic model """
         schema = schema if schema else cls.__schema__
 
-        if model:
-            return parse_obj_as(List[schema], model)
+        # if model:
+        #     return parse_obj_as(List[schema], model)
 
         return parse_obj_as(List[schema], cls.query.all())

@@ -5,8 +5,8 @@ def create_app():
 
     app = FastAPI()
 
-    from users import router 
+    from app.users.router import user_router 
 
-    app.include_router(router)
+    app.include_router(user_router)
 
     return app 

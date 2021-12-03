@@ -14,10 +14,6 @@ class BaseModel(Model):
             ErrorWrapper(error, loc=fieldname)
         )
 
-
-    # def exce_validate(self):
-    #     print(dir(self))
-
     @classmethod
     def validate(cls, value):
         if isinstance(value, dict):

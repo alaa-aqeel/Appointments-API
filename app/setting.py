@@ -5,7 +5,13 @@ from pydantic import BaseSettings
 class Setting(BaseSettings):
 
     APP_NAME: str = "Appointment-API"
-    DATABASE_URL: str = "sqlite:///./sqlite.db"
+    DATABASE: dict = {
+        "url": "sqlite:///./sqlite.db",
+        "connect_args":{
+            "check_same_thread": False
+        }
+
+    }
     # "postgresql://user:password@postgresserver/db"
     class Config: 
 

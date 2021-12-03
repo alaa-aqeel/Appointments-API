@@ -41,16 +41,21 @@ class BaseModel(schema.BaseSchema):
             return obj 
         except exc.SQLAlchemyError as err:
             cls.session.rollback()
-            raise HTTPException(status_code=403, detail=str(err.__dict__.get("orig", "")))
+            raise HTTPException(status_code=403, detail={
+                'ok': False,
+                'msg': str(err.__dict__.get("orig", ""))
+            })
+
 
     @classmethod
     def get(cls, id) -> object:
         obj = cls.query.get(id)
         if not obj:
-            raise HTTPException(
-                status_code=404, 
-                detail=f"NOT FOUND {cls.__name__} {id}"
-            )
+            raise HTTPException(status_code=403, detail={
+                'ok': False,
+                'msg': f"NOT FOUND {cls.__name__} {id}",
+                "data": {"id": id}
+            })
         return obj
 
     def save(self) -> list:
@@ -58,20 +63,39 @@ class BaseModel(schema.BaseSchema):
         try: 
             self.session.add(self)
             self.session.commit()
-            self.session.refresh(self)
             return True, self
         except exc.SQLAlchemyError as err:
             self.session.rollback()
-            raise HTTPException(status_code=403, detail=str(err.__dict__.get("orig", "")))
+            raise HTTPException(status_code=403, detail={
+                'ok': False,
+                'msg': str(err.__dict__.get("orig", ""))
+            })
 
     def update(self, **kw:dict) -> list:
         try:
             obj = self.query.filter_by(id=self.id)
             obj.update(kw)
+            self.session.commit()
             return obj.first()
         except exc.SQLAlchemyError as err:
-            raise HTTPException(status_code=403, detail=str(err.__dict__.get("orig", "")))
+            
+            raise HTTPException(status_code=403, detail={
+                'ok': False,
+                'msg': str(err.__dict__.get("orig", ""))
+            })
     
+    def delete(self):
+        try: 
+            self.session.delete(self)
+            self.session.commit()
+            return True
+        except exc.SQLAlchemyError as err:
+            self.session.rollback()
+            raise HTTPException(status_code=403, detail={
+                'ok': False,
+                'msg': str(err.__dict__.get("orig", ""))
+            })
+
     def __repr__(self) -> str:
 
         return f"<{self.__class__.__name__}(id={self.id})>"

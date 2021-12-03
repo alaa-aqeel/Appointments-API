@@ -1,21 +1,10 @@
 from database.model import Model, TimeStamp, Column, ForeignKey, types, relationship
-from app.users import schemas
-
-class Role(Model):
-
-    __schema__ = schemas.RoleReadOnly
-
-    name = Column(types.String(45), unique=True)
-    desc = Column(types.TEXT) 
-    users = relationship("User", back_populates="role")
-
-    def __repr__(self) -> str:
-        return f"<Role (name={self.name}, id={self.id})>"
-
+from app.schemas import user
+# from app.roles.models import Role
 
 class User(Model, TimeStamp):
 
-    __schema__ = schemas.UserReadOnly
+    __schema__ = user.UserReadOnly
 
     username = Column(types.String(45), unique=True)
     password = Column(types.String)
@@ -24,7 +13,7 @@ class User(Model, TimeStamp):
     is_super  = Column(types.Boolean, default=0)
 
     role_id = Column(types.Integer, ForeignKey('role.id'))
-    role = relationship(Role, back_populates="users")
+    role = relationship('Role', back_populates="users")
 
 
     def set_role(self, roleId: int) -> None:

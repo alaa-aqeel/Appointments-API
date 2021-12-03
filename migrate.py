@@ -1,7 +1,6 @@
-from users.models import Role, User
+from app.models.user import User
+from app.models.role import Role
 from database import model 
-
-
 
 
 def create_roles() -> Role:

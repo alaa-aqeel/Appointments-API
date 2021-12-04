@@ -36,7 +36,6 @@ def register(user: AuthUser):
 
     return user.response(data=new_user.parse())
 
-
 @router.post("/logout", dependencies=[Authorize])
 def logout(jwt: AuthJWT= Depends()):
 

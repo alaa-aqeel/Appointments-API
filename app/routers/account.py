@@ -13,17 +13,18 @@ def acount(user: object=Authorize):
 
     return user.parse()
 
-@router.post("/")
+@router.put("/")
 def update_account(schema: UserProfile,user: object=Authorize):
     """Update account info"""
     
     user.update(**schema.dict())
-    return user.parse()
+    return UserProfile.response(msg="Successfuly update account", data=user.parse())
 
 @router.delete("/")
 def delete_account(user: object=Authorize, jwt: AuthJWT= Depends()):
     """Delete account"""
     user.delete()
     DenyListToken.revoke(jwt.get_raw_jwt())
+    
     return UserProfile.response(msg="Successfuly delete account")
 

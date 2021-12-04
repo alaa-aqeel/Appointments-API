@@ -1,20 +1,18 @@
-from fastapi import APIRouter, Request, Body
-from app.depends import AuthorizeRole, Authorize, GetProfile
-from app.schemas import profile as schema
-from app.models  import Customer
+from fastapi import APIRouter, Request, HTTPException
+from app.depends import AuthorizeRole, GetProfile
 
 router = APIRouter(
-            prefix="/profile", 
+            prefix="/me/profile", 
             dependencies=[
-                AuthorizeRole(["customer"])
+                AuthorizeRole(["customer", "employee"])
             ])
 
 @router.get("/")
 def profile_customer(request: Request):
     """Get user profile"""
     
-    profile_customer = request.state.user.get_profile_customer
-    return profile_customer.parse()
+    _profile = request.state.user.get_profile
+    return _profile.parse()
 
 @router.post("/")
 async def create_profile(
@@ -23,14 +21,14 @@ async def create_profile(
     ):
     """Create profile"""
     user = request.state.user
-    try:
-        _profile = user.get_profile
-        
-    except:
-        _profile = user.create_profile(profile)
-    
-    return _profile
+    _profile = user.get_profile
+    if _profile:
+        raise HTTPException(404, detail={
+            "ok": False,
+            "msg": "Not Fond"
+        })
 
+    _profile = user.create_profile(**profile.dict())
     return _profile.parse()
 
 @router.put('/')

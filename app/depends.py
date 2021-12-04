@@ -57,10 +57,10 @@ async def get_body_porfile(request: Request):
 
     if user:
         json = await request.json()
-        if user.has_role(['customer']):
+        if user.has_roles(['customer']):
             return profile.Customer(**json)
 
-        elif user.has_role(['employee']):
+        elif user.has_roles(['employee']):
             return profile.Employee(**json)
 
         raise HTTPException(status_code=401, detail={

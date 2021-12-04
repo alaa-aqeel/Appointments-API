@@ -25,29 +25,24 @@ class User(Model, TimeStamp):
     @property
     def get_profile(self):
 
-        if self.customer and self.has_role(["customer"]):
+        if self.customer and self.has_roles(["customer"]):
             return self.customer 
 
-        if self.employee and self.has_role(["employee"]):
+        if self.employee and self.has_roles(["employee"]):
             return self.employee 
-
-        raise HTTPException(404, detail={
-            "ok": False,
-            "msg": "Not found profile"
-        })
         
     def create_profile(self, **kw:dict):
         """Create profile customer or employee"""
 
         # Employee, Customer
-        if self.customer and self.has_role(["customer"]):
+        if not self.customer and self.has_roles(["customer"]):
             _customer = customer.Customer(**kw)
             self.customer = _customer
             self.save()
             
             return self.customer 
 
-        if self.employee and self.has_role(["employee"]):
+        if not self.employee and self.has_roles(["employee"]):
             _employee = employee.Employee(**kw)
             self.employee = _employee
             self.save()

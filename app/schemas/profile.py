@@ -13,6 +13,9 @@ class Profile(BaseModel):
     email: Optional[str]
     gender: GenderEnum
 
+    class Config:
+        orm_mode = True
+
 class Customer(Profile):
     birthdate: date 
 
@@ -22,9 +25,6 @@ class Employee(Profile):
     special: str
     address: str
     price: str
-
-    class Config:
-        orm_mode = True
 
 class CustomerReadOnly(Customer):
     id: int 

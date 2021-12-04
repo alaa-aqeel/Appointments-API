@@ -1,6 +1,8 @@
+from sqlalchemy.sql.expression import false
 from database.model import Model, TimeStamp, Column, ForeignKey, types, relationship
+from app.func import generate_password_hash, verify_password
+from app.models import Role
 from app.schemas import user
-# from app.roles.models import Role
 
 class User(Model, TimeStamp):
 
@@ -14,6 +16,20 @@ class User(Model, TimeStamp):
 
     role_id = Column(types.Integer, ForeignKey('role.id'))
     role = relationship('Role', back_populates="users")
+
+    @classmethod
+    def create(cls, **kw):
+        kw["password"] = generate_password_hash(kw['password'])
+        
+        return super().create(**kw)
+
+    @classmethod
+    def login(cls, username: str, password: str):
+
+        user = cls.query.filter_by(username=username).first()
+        if user:
+            if verify_password(password, user.password):
+                return user
 
 
     def set_role(self, roleId: int) -> None:

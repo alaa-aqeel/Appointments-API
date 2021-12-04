@@ -4,8 +4,9 @@ from pydantic import BaseSettings
 
 class Setting(BaseSettings):
 
-    APP_NAME: str = "Appointment-API"
-    DATABASE: dict = {
+    authjwt_secret_key: str = "secret"
+    app_name: str = "Appointment-API"
+    database: dict = {
         "url": "sqlite:///./sqlite.db",
         "connect_args":{
             "check_same_thread": False
@@ -13,6 +14,14 @@ class Setting(BaseSettings):
 
     }
     # "postgresql://user:password@postgresserver/db"
+
+    allow_origins = [
+        "http://localhost.tiangolo.com",
+        "https://localhost.tiangolo.com",
+        "http://localhost",
+        "http://localhost:8080",
+    ]
+
     class Config: 
 
         env_file: str = ".env"

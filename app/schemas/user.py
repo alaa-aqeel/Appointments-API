@@ -1,23 +1,40 @@
 from datetime import datetime
 from typing import Optional, List
 from database.schema import BaseModel
-from app.schemas.role import RoleReadOnly
+
+class Role(BaseModel):
+    id: int 
+    name: str
+    desc: Optional[str]
+
+    class Config:
+        orm_mode = True
+
 
 class User(BaseModel):
-    username: str 
-    password: str
-    is_active: Optional[bool] = False
+    username: str
     
-
     class Config:
         orm_mode = True   
 
+class AuthUser(User):
+    password: str
+
+    class Config:
+        orm_mode = True 
+
+class AdminUser(User):
+    role_id: Optional[int] 
+    password: str
+    is_active: Optional[bool] = False
+
+class UserProfile(User):
+    pass 
+
 class UserReadOnly(User):
     id: Optional[int]
-    role: Optional[RoleReadOnly]
+    role: Optional[Role]
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
     last_login: Optional[datetime]
-    
-class UserRoleId(User):
-    role_id: Optional[int] 
+    is_active: Optional[bool] = False

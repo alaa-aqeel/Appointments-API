@@ -30,6 +30,25 @@ class BaseModel(Model):
             return cls.from_orm(value)
 
 
+    def response(self, 
+            ok: str=True, 
+            data: dict=None, 
+            msg: str= None,
+            errors: list=None
+        ):
+        resp = {'ok': ok} 
+        if msg:
+            resp.update(msg=msg)
+            
+        if data:
+            resp.update({"data": data})
+
+        if errors:
+            resp.update({"errors": errors})
+
+        return {"detail":resp}
+
+        
 class BaseSchema():
 
 

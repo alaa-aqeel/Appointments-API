@@ -1,2 +1,2 @@
-from app.schemas.role import Role, RoleReadOnly
-from app.schemas.user import User, UserReadOnly, UserRoleId
+from app.schemas.user import UserReadOnly, AdminUser, AuthUser, UserProfile
+from app.schemas.customer import Customer, CustomerReadOnly

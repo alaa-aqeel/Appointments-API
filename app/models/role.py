@@ -1,11 +1,9 @@
-from sqlalchemy.orm import validates
 from database.model import Model, Column, types, relationship
-from database.validations import import_class
-from app.schemas import user
+from app.schemas.user import Role
 
 class Role(Model):
 
-    __schema__ = user.RoleReadOnly
+    __schema__ = Role
 
     name = Column(types.String(45), unique=True)
     desc = Column(types.TEXT) 

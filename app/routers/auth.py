@@ -9,7 +9,8 @@ router = APIRouter()
 @router.post("/login")
 def login(user: AuthUser, jwt: AuthJWT= Depends()):
 
-    login_user = User.login(**user.dict())
+    login_user = User.login(username=user.username, 
+                            password=user.password)
     if not login_user:
         return user.response(ok=False, msg="username or password invalid")
 
@@ -27,8 +28,11 @@ def login(user: AuthUser, jwt: AuthJWT= Depends()):
 @router.post("/register")
 def register(user: AuthUser):
 
-    new_user = User.create(**user.dict())
-    new_user.set_role(1)
+    data = user.dict()
+    role = data.pop("role", 1) 
+
+    new_user = User.create(**data)
+    new_user.set_role(role)
 
     return user.response(data=new_user.parse())
 

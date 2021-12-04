@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import IntEnum, Enum
 from typing import Optional, List
 from database.schema import BaseModel
 from app.schemas import customer 
@@ -16,10 +17,15 @@ class User(BaseModel):
     username: str
     
     class Config:
-        orm_mode = True   
+        orm_mode = True  
 
+class RoleEnum(IntEnum, Enum):
+    customer = 1
+    employee = 2
+ 
 class AuthUser(User):
     password: str
+    role: Optional[RoleEnum] = 1
 
     class Config:
         orm_mode = True 

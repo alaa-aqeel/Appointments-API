@@ -1,9 +1,8 @@
-from datetime import date, timedelta
 from database.model import Model, Column, types, relationship, TimeStamp, ForeignKey, backref
 from app.schemas import CustomerReadOnly
 
 class Employee(Model, TimeStamp):
-
+    
     __schema__ = CustomerReadOnly
 
     fullname = Column(types.String(45))
@@ -16,18 +15,34 @@ class Employee(Model, TimeStamp):
     price = Column(types.Integer, nullable=True)
     gender = Column(types.Enum('female', 'male', name="gender_enum", create_type=False))
 
-    # One TO One with User Model
-    user_id = Column(types.Integer, ForeignKey('user.id'))
+    # One Employee TO One with User account
+    account_id = Column(types.Integer, ForeignKey('user.id'))
     account = relationship("User", 
-                    backref="employees", 
-                    foreign_keys="Employee.user_id")
+                    backref=backref("employee", uselist=False), 
+                    foreign_keys="Employee.account_id")
+
+    # Many Employees To One Category
+    category_id = Column(types.Integer, ForeignKey('category.id'))
+    category = relationship("Category", 
+                    backref=backref("employees", uselist=False), 
+                    foreign_keys="Employee.category_id")
+
+    # Many Employees To One User Manager
+    manager_id = Column(types.Integer, ForeignKey('user.id'))
+    manager = relationship("User", 
+                    backref=backref("employees", uselist=False), 
+                    foreign_keys="Employee.manager_id")
 
 
+    # Set category by CategoryModel
+    def set_category(self, category):
+        self.category = category
+        self.save()
 
+    # Set user 
     def set_account(self, user: object) -> None:
         self.user = user
         self.save()
 
     def __repr__(self) -> str:
-
         return f"<Employee (fullname={self.fullname}, id={self.id})>"

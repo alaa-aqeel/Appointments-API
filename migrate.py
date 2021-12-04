@@ -4,16 +4,22 @@ from database import model
 
 def create_roles() -> Role:
 
-    Role(name="customer").save()
-    Role(name="employee").save()
-    Role(name="admin").save()
+    Role(name="customer").save() # 1
+    Role(name="employee").save() # 2
+    Role(name="manager").save() # 3
+    Role(name="admin").save() # 4
 
 def create_users():
 
-    _user = User.create(username="alaa_aqeel",
-        password="hash_password_12345678")
-    
-    _user.set_role(1) # customer
+    User.create(
+        username="manager",
+        password="1234567890"
+    ).set_role(3) # manager
+
+    User.create(
+        username="admin",
+        password="1234567890"
+    ).set_role(4) # admin
 
 
 if __name__ == "__main__":

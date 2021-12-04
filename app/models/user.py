@@ -41,6 +41,11 @@ class User(Model, TimeStamp):
         
         return super().create(**kw)
 
+    def update(self, **kw):
+        if kw.get("password"):
+            kw["password"] = generate_password_hash(kw['password'])
+        return super().update(**kw)
+
     @classmethod
     def login(cls, username: str, password: str):
         user = cls.query.filter_by(username=username).first()

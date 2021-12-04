@@ -2,36 +2,9 @@ from fastapi import APIRouter, Depends
 from fastapi_jwt_auth import AuthJWT
 from app.schemas import AuthUser, UserProfile
 from app.models import User, DenyListToken
-from app.depends import Authorize
+from app.depends import Authorize, RefreshToken
 
 router = APIRouter()
-
-
-@router.get("/me")
-def acount(user: object=Authorize):
-    """Get acount info"""
-
-    return user.parse()
-
-@router.post("/me")
-def update_account(schema: UserProfile,user: object=Authorize):
-    """Update account info"""
-    
-    user.update(**schema.dict())
-    return user.parse()
-
-@router.delete("/me")
-def delete_account(user: object=Authorize, jwt: AuthJWT= Depends()):
-    """Delete account"""
-    user.delete()
-    DenyListToken.revoke(jwt.get_raw_jwt())
-    return UserProfile.response(msg="Successfuly delete account")
-
-@router.post("/logout", dependencies=[Authorize])
-def logout(jwt: AuthJWT= Depends()):
-
-    DenyListToken.revoke(jwt.get_raw_jwt())
-    return UserProfile.response(msg="Successfuly logout")
 
 @router.post("/login")
 def login(user: AuthUser, jwt: AuthJWT= Depends()):
@@ -41,8 +14,15 @@ def login(user: AuthUser, jwt: AuthJWT= Depends()):
         return user.response(ok=False, msg="username or password invalid")
 
     token = jwt.create_access_token(subject=login_user.id)
+    refresh_token = jwt.create_refresh_token(subject=login_user.id)
 
-    return user.response(data={"token": token}, msg="login success")
+    return user.response(
+            data={
+                "token": token,
+                "refresh_token": refresh_token
+            }, 
+            msg="login success"
+        )
 
 @router.post("/register")
 def register(user: AuthUser):
@@ -51,3 +31,25 @@ def register(user: AuthUser):
     new_user.set_role(1)
 
     return user.response(data=new_user.parse())
+
+
+@router.post("/logout", dependencies=[Authorize])
+def logout(jwt: AuthJWT= Depends()):
+
+    DenyListToken.revoke(jwt.get_raw_jwt())
+    return UserProfile.response(msg="Successfuly logout")
+
+@router.post('/refresh')
+def refresh(new_token: str = RefreshToken):
+ 
+    return UserProfile.response(
+            data={"token": new_token}, 
+            msg="refresh token success"
+        )
+
+@router.post('/refresh/revoke')
+def refresh_revoke(jwt: AuthJWT = Depends()):
+    jwt.jwt_refresh_token_required()
+
+    DenyListToken.revoke(jwt.get_raw_jwt())
+    return UserProfile.response(msg="Successrefuly revoke refresh token")

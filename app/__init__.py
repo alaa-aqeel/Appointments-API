@@ -11,8 +11,8 @@ def get_config():
     return setting
 
 @AuthJWT.token_in_denylist_loader
-def check_if_token_in_denylist(token):
-    return token.DenyListToken.is_revoke(token)
+def check_if_token_in_denylist(_token):
+    return token.DenyListToken.is_revoke(_token)
 
 def create_app():
 

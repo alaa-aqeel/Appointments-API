@@ -3,12 +3,27 @@ from fastapi import Depends,Request
 from fastapi.exceptions import HTTPException
 from app.models import user
 
+def authorize_refresh(auth: AuthJWT = Depends()) -> str:
+    """Refresh jwt token"""
+    auth.jwt_refresh_token_required()
+
+    # subject is userId 
+    if not user.User.query.get(auth.get_jwt_subject()):
+        raise HTTPException(status_code=401, detail={
+            "ok": False,
+            "msg": "Unauthorized"
+        })
+
+    # create new token 
+    new_token = auth.create_access_token(subject=auth.get_jwt_subject())
+
+    return new_token
 
 def authorize(request: Request, auth: AuthJWT = Depends()) -> user.User:
     """Auth JWT"""
-    
     auth.jwt_required()
-    print(auth.get_jwt_subject())
+
+    # subject is userId 
     current_user = user.User.query.get(auth.get_jwt_subject())
     if not current_user:
         raise HTTPException(status_code=401, detail={
@@ -37,4 +52,5 @@ def authorize_role(roles: list) -> Depends:
 
 
 Authorize = Depends(authorize)
-AuthorizeRole = authorize_role
+AuthorizeRole = authorize_role # is decorator -> authorize_role([roles name])
+RefreshToken = Depends(authorize_refresh)

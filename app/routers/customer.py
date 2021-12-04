@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Request, Body
-from app.depends import AuthorizeRole, Authorize
-from app.schemas import customer as schema, UserProfile
+from app.depends import AuthorizeRole, Authorize, GetProfile
+from app.schemas import profile as schema
 from app.models  import Customer
 
 router = APIRouter(
-            prefix="/customer", 
+            prefix="/profile", 
             dependencies=[
                 AuthorizeRole(["customer"])
             ])
@@ -17,24 +17,29 @@ def profile_customer(request: Request):
     return profile_customer.parse()
 
 @router.post("/")
-def create_profile(request: Request, customer: schema.Customer):
-    """Get user profile"""
+async def create_profile(
+        request: Request, 
+        profile= GetProfile
+    ):
+    """Create profile"""
+    user = request.state.user
     try:
-        profile_customer = request.state.user.get_profile_customer
+        _profile = user.get_profile
         
     except:
-        profile_customer = Customer.create(**customer.dict())
-        profile_customer.set_account(request.state.user)
+        _profile = user.create_profile(profile)
+    
+    return _profile
 
-    return profile_customer.parse()
+    return _profile.parse()
 
 @router.put('/')
 def update_profile_customer(
-        request: Request,
-        customer: schema.Customer
+        request: Request, 
+        profile = GetProfile
     ):
-    """Get Profile"""
+    """Update Profile"""
 
-    profile_customer = request.state.user.get_customer
-    profile_customer.update(**customer.dict())
-    return profile_customer.parse()
+    _profile = request.state.user.get_profile 
+    _profile.update(**profile.dict()) 
+    return _profile.parse()

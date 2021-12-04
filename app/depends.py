@@ -2,6 +2,7 @@ from fastapi_jwt_auth import AuthJWT
 from fastapi import Depends,Request
 from fastapi.exceptions import HTTPException
 from app.models import user
+from app.schemas import profile
 
 def authorize_refresh(auth: AuthJWT = Depends()) -> str:
     """Refresh jwt token"""
@@ -51,6 +52,28 @@ def authorize_role(roles: list) -> Depends:
     return Depends(check_role)
 
 
+async def get_body_porfile(request: Request):
+    user = getattr(request.state, "user", None)
+
+    if user:
+        json = await request.json()
+        if user.has_role(['customer']):
+            return profile.Customer(**json)
+
+        elif user.has_role(['employee']):
+            return profile.Employee(**json)
+
+        raise HTTPException(status_code=401, detail={
+            "ok": False,
+            "msg": "Access Deny"
+        })
+
+    raise HTTPException(status_code=401, detail={
+        "ok": False,
+        "msg": "Unauthorized"
+    })
+
 Authorize = Depends(authorize)
 AuthorizeRole = authorize_role # is decorator -> authorize_role([roles name])
 RefreshToken = Depends(authorize_refresh)
+GetProfile = Depends(get_body_porfile)

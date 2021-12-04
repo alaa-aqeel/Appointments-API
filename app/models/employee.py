@@ -1,9 +1,9 @@
 from database.model import Model, Column, types, relationship, TimeStamp, ForeignKey, backref
-from app.schemas import CustomerReadOnly
+from app.schemas import EmployeeReadOnly
 
 class Employee(Model, TimeStamp):
     
-    __schema__ = CustomerReadOnly
+    __schema__ = EmployeeReadOnly
 
     fullname = Column(types.String(45))
     phone = Column(types.String(15))

@@ -7,12 +7,21 @@ class GenderEnum(str, Enum):
     male = 'male'
     female = 'female'
 
-class Customer(BaseModel):
+class Profile(BaseModel):
     fullname: str
     phone: str
     email: Optional[str]
-    birthdate: date 
     gender: GenderEnum
+
+class Customer(Profile):
+    birthdate: date 
+
+
+class Employee(Profile):
+    about: str 
+    special: str
+    address: str
+    price: str
 
     class Config:
         orm_mode = True
@@ -20,4 +29,9 @@ class Customer(BaseModel):
 class CustomerReadOnly(Customer):
     id: int 
     age: int
+    created_at: datetime
+
+class EmployeeReadOnly(Employee):
+    id: int 
+    avatar: str 
     created_at: datetime

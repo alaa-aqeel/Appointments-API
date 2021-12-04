@@ -2,7 +2,6 @@ from datetime import datetime
 from enum import IntEnum, Enum
 from typing import Optional, List
 from database.schema import BaseModel
-from app.schemas import customer 
 
 class Role(BaseModel):
     id: int 

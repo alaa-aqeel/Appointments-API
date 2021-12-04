@@ -4,7 +4,8 @@ from pydantic import BaseSettings
 
 class Setting(BaseSettings):
 
-    authjwt_secret_key: str = "secret"
+    authjwt_secret_key: str = "SECRETKEY"
+    # authjwt_denylist_enabled: bool = True
     app_name: str = "Appointment-API"
     database: dict = {
         "url": "sqlite:///./sqlite.db",

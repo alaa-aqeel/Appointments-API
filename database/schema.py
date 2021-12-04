@@ -29,8 +29,8 @@ class BaseModel(Model):
         else:
             return cls.from_orm(value)
 
-
-    def response(self, 
+    @classmethod
+    def response(cls, 
             ok: str=True, 
             data: dict=None, 
             msg: str= None,

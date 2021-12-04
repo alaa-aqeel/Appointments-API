@@ -2,7 +2,7 @@ from database.model import Model, Column, types, relationship
 from app.schemas.user import Role
 
 class Role(Model):
-
+    
     __schema__ = Role
 
     name = Column(types.String(45), unique=True)

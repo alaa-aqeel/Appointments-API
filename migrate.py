@@ -1,18 +1,19 @@
-from app.models.user import User
-from app.models.role import Role
+from app.models import User, Role
 from database import model 
 
 
 def create_roles() -> Role:
 
-    Role.create(name="customer")
-    Role.create(name="employee")
-    Role.create(name="admin")
+    Role(name="customer").save()
+    Role(name="employee").save()
+    Role(name="admin").save()
 
 def create_users():
 
-    User.create(username="alaa_aqeel",
-                password="hash_password_12345678")
+    _user = User.create(username="alaa_aqeel",
+        password="hash_password_12345678")
+    
+    _user.set_role(1) # customer
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional, List
 from database.schema import BaseModel
+from app.schemas import customer 
 
 class Role(BaseModel):
     id: int 
@@ -29,7 +30,8 @@ class AdminUser(User):
     is_active: Optional[bool] = False
 
 class UserProfile(User):
-    pass 
+    password: str
+     
 
 class UserReadOnly(User):
     id: Optional[int]

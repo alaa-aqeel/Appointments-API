@@ -1,22 +1,23 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer
 from fastapi_jwt_auth import AuthJWT
+from app.models import token
 from app.errors import hundlers_errors
 from app.setting import setting
-
 
 
 @AuthJWT.load_config
 def get_config():
     return setting
 
+@AuthJWT.token_in_denylist_loader
+def check_if_token_in_denylist(token):
+    return token.DenyListToken.is_revoke(token)
 
 def create_app():
 
     app = FastAPI()
 
-    
 
     app.add_middleware(
         CORSMiddleware,

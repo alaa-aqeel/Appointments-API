@@ -1,47 +1,52 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Body
+from fastapi.param_functions import Depends
 from app.models import user as model
 from app.schemas import user as schema
 from app.depends import Authorize
 
-user_router = APIRouter(prefix="/user", dependencies=[Authorize])
+router = APIRouter(
+        prefix="/user", 
+        dependencies=[Authorize]
+    )
 
-@user_router.get("/")
+@router.get("/")
 def all_user():
     """Get All Users"""
     
     return model.User.parse_all()
 
-@user_router.get("/{id}")
+@router.get("/{id}")
 def get_user(id: int):
     """Get user by id"""
     
     return model.User.get(id).parse()
 
-@user_router.post("/create", status_code=201)
+@router.post("/create", status_code=201)
 def create_user(sch_user: schema.AdminUser):
     """Create new user"""
 
     new_user = model.User.create(**sch_user.dict(exclude_unset=True))
-
     if sch_user.role_id:
         new_user.set_role(sch_user.role_id)
 
     return sch_user.response(data=new_user.parse())
 
-@user_router.put("/update/{id}")
-def update_user(id, sch_user: schema.AdminUser):
-    """Update user by id"""
+@router.put("/active/{id}")
+def active_user(
+        id: int, 
+        active = Body(None, alias="active", embed=True)
+    ):
+    """Actived user account by Id"""
     
     _user = model.User.get(id)
-    if sch_user.role_id:
-        _user.set_role(sch_user.role_id)
+    _user.is_active = active
+    _user.save()
 
-    _user.update(**sch_user.dict(exclude_unset=True))
     return _user.parse()
 
-@user_router.delete("/delete/{id}", status_code=204)
+@router.delete("/delete/{id}", status_code=204)
 def delete_user(id: int):
-
+    """Delete user by Id"""
     _user = model.User.get(id)
     _user.delete()
 

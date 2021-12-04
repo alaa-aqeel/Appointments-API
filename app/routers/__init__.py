@@ -1,10 +1,12 @@
 from fastapi import APIRouter
-from app.routers.user import user_router
-from app.routers.auth import auth_router
+from app.routers import admin
+from app.routers import auth
+from app.routers import customer
 
 
 # Group API 
 api = APIRouter(prefix="/api")
 
-api.include_router(user_router)
-api.include_router(auth_router)
+api.include_router(admin.router)
+api.include_router(auth.router)
+api.include_router(customer.router)

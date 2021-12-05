@@ -1,4 +1,4 @@
-from database.model import Model, Column, types 
+from core.database.model import Model, Column, types 
 
 
 class DenyListToken(Model):

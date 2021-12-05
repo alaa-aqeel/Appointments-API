@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, HTTPException
-from app.depends import AuthorizeRole, GetProfile
+from core.depends import AuthorizeRole, GetProfile
 
 router = APIRouter(
             prefix="/me/profile", 
@@ -12,7 +12,14 @@ def profile_customer(request: Request):
     """Get user profile"""
     
     _profile = request.state.user.get_profile
-    return _profile.parse()
+    if _profile:
+        return _profile.parse()
+
+    raise HTTPException(404, detail={
+        "ok": False,
+        "msg": "NOT FOUND"
+    })
+
 
 @router.post("/")
 async def create_profile(

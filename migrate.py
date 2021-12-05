@@ -1,5 +1,5 @@
 from app.models import User, Role
-from database import model 
+from core.database import model 
 
 
 def create_roles() -> Role:

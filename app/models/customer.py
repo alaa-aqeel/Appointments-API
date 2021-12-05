@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from database.model import Model, Column, types, relationship, TimeStamp, ForeignKey, backref
+from core.database.model import Model, Column, types, relationship, TimeStamp, ForeignKey, backref
 from app.schemas import CustomerReadOnly
 
 class Customer(Model, TimeStamp):

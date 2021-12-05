@@ -1,62 +1,38 @@
-from fastapi import APIRouter, Body
-from fastapi.param_functions import Depends
-from app.models import user as model
-from app.schemas import user as schema
-from app.depends import Authorize
+from fastapi import Request, Body, APIRouter, HTTPException
+from core.depends import  AuthorizeRole
+from core.resource import resource, BaseResource
+from app.schemas.user import AdminUser
+from app.repositories.user_repository import UserRepository
+from app.models.user import User  
 
 router = APIRouter(
         prefix="/user", 
-        dependencies=[Authorize]
+        # dependencies=[ AuthorizeRole(["admin"])]
     )
 
-@router.get("/")
-def all_user():
-    """Get All Users"""
-    
-    return model.User.parse_all()
+@resource(router, path="")
+class UserResource(BaseResource):
 
-@router.get("/{id}")
-def get_user(id: int):
-    """Get user by id"""
-    
-    return model.User.get(id).parse()
+    repository = UserRepository(User)
 
-@router.post("/create", status_code=201)
-def create_user(sch_user: schema.AdminUser):
-    """Create new user"""
+    def index(self):
 
-    new_user = model.User.create(**sch_user.dict(exclude_unset=True))
-    if sch_user.role_id:
-        new_user.set_role(sch_user.role_id)
+        return self.all()
 
-    return sch_user.response(data=new_user.parse())
+    def store(self):
+        user = AdminUser(**self.body)
+        new_user = self.repository.create(**user.dict())
 
-@router.put("/active/{id}")
-def active_user(
-        id: int, 
-        active = Body(None, alias="active", embed=True)
-    ):
-    """Actived user account by Id"""
-    
-    _user = model.User.get(id)
-    _user.is_active = active
-    _user.save()
+        return new_user.parse()
 
-    return _user.parse()
+    def update(self, id: int):
+        """Active Account"""    
 
-@router.delete("/delete/{id}", status_code=204)
-def delete_user(id: int):
-    """Delete user by Id"""
-    _user = model.User.get(id)
-    _user.delete()
-
-    return {
-        "detail": {
-            "ok": True,
-            "msg": "Successfuly delete user",
-            "data": {"id": id}
-        }
-    }
-
-
-    
+        user = self.repository.update(id, self.body.get("active", 1))
+        if user:
+            return self.response(
+                msg="Succesfuly update ", 
+                data=user.parse()
+            )
+        
+        raise HTTPException(404, dict(msg=f"Not found user {id}"))

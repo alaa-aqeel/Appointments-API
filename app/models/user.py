@@ -1,7 +1,7 @@
 from fastapi.exceptions import HTTPException
 from sqlalchemy.sql.expression import false
-from database.model import Model, TimeStamp, Column, ForeignKey, types, relationship
-from app.func import generate_password_hash, verify_password
+from core.database.model import Model, TimeStamp, Column, ForeignKey, types, relationship
+from core.func import generate_password_hash, verify_password
 from app.models import role, customer, employee
 from app.schemas import user
 

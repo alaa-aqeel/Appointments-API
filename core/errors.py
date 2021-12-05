@@ -4,7 +4,7 @@ from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import ValidationError
 from fastapi.responses import JSONResponse
 
-def hundlers_errors(app: object): 
+def __init__handler(app: object): 
 
     @app.exception_handler(AuthJWTException)
     async def authjwt_exception_handler(request: Request, exc: AuthJWTException):

@@ -1,4 +1,4 @@
-from database.model import Model, Column, types, relationship
+from core.database.model import Model, Column, types, relationship
 from app.schemas.user import Role
 
 class Role(Model):

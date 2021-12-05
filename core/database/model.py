@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declared_attr, declarative_base
 from sqlalchemy.sql import sqltypes as types
 from sqlalchemy.orm import relationship, backref
 from fastapi import HTTPException
-from database import SessionLocal, engine, schema
+from core.database import SessionLocal, engine, schema
 
 class CustomProperty(property):
     """Custom Property To call func"""

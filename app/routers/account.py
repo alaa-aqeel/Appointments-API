@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi_jwt_auth import AuthJWT
 from app.schemas import UserProfile
 from app.models import DenyListToken
-from app.depends import Authorize
+from core.depends import Authorize
 
 
 router = APIRouter(prefix="/me")

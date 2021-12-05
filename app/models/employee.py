@@ -1,4 +1,4 @@
-from database.model import Model, Column, types, relationship, TimeStamp, ForeignKey, backref
+from core.database.model import Model, Column, types, relationship, TimeStamp, ForeignKey, backref
 from app.schemas import EmployeeReadOnly
 
 class Employee(Model, TimeStamp):

@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Request, Body
-from app.depends import AuthorizeRole, Authorize
-from app.schemas import customer as schema, UserProfile
+from fastapi import APIRouter, Request
+from core.depends import AuthorizeRole
+from app.schemas import customer as schema
 from app.models  import Customer
 
 router = APIRouter(

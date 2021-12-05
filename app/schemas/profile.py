@@ -1,11 +1,12 @@
 from enum import Enum
 from datetime import datetime, date
 from typing import Optional, List
-from database.schema import BaseModel
+from core.database.schema import BaseModel
 
 class GenderEnum(str, Enum):
     male = 'male'
     female = 'female'
+
 
 class Profile(BaseModel):
     fullname: str
@@ -21,10 +22,11 @@ class Customer(Profile):
 
 
 class Employee(Profile):
-    about: str 
+    about: Optional[str] 
     special: str
-    address: str
-    price: str
+    address: Optional[str] 
+    price: Optional[int]
+    category: str
 
 class CustomerReadOnly(Customer):
     id: int 

@@ -57,9 +57,8 @@ def resource(router, path: str=""):
 
 class BaseResource:
 
-    def __init__(self, request: Request, body=Body(None)):
+    def __init__(self, request: Request):
         self.request = request 
-        self.body = body
         
     async def get_json(self):
         

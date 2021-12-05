@@ -1,26 +1,21 @@
-from fastapi import Request, Body, APIRouter, HTTPException
-from core.depends import  AuthorizeRole
+from fastapi import Body, APIRouter
 from core.resource import resource, BaseResource
 from app.schemas.user import AdminUser
 from app.repositories.user_repository import UserRepository
 from app.models.user import User  
 
-router = APIRouter(
-        prefix="/user", 
-        dependencies=[ AuthorizeRole(["admin"]) ]
-    )
+router = APIRouter(prefix="/user")
 
-@resource(router, path="")
+@resource(router)
 class UserResource(BaseResource):
 
     repository = UserRepository(User)
 
     def index(self):
 
-        return self.all()
+        return self.repository.all()
 
-    def store(self):
-        user = AdminUser(**self.body)
+    def store(self, user: AdminUser):
         new_user = self.repository.create(**user.dict())
 
         return self.response(
@@ -38,7 +33,7 @@ class UserResource(BaseResource):
             msg="Succesfuly delete", 
             data={"id": id})
 
-    def update(self, id: int, active = Body(1)):
+    def update(self, id: int, active = Body(1, embed=True)):
         """Active Account"""    
 
         user = self.repository.update(id, **{

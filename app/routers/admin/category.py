@@ -1,24 +1,46 @@
 from fastapi import APIRouter
-from app.models import category as category_model
-from app.schemas import category as category_schema
+from app.models.category import Category
+from app.schemas import category 
+from app.repositories import BaseRepository
+from core.resource import resource, BaseResource
 
-from core.resource import resource
 
 router = APIRouter(prefix="/category")
 
-
 @resource(router)
-class CategoryResource:
+class CategoryResource(BaseResource):
 
-    model = category_model.Category
-    schema = category_schema.Category
-    schema_read_only = category_schema.CategoryReadOnly
-
+    repository = BaseRepository(Category)
 
     def index(self):
 
-        return self.all()
+        return self.repository.all()
 
-    def show(self, id: int):
+    def store(self, category: category.Category):
+        """Create category"""  
+        new_category = self.repository.create(**category.dict())
 
-        return self.get(id)
+        return self.response(
+            msg="Succesfuly delete", 
+            data=new_category.parse())
+
+    def show(self, id):
+        """Get one category"""  
+        return self.repository.get(id).parse()
+
+    def delete(self, id):
+        """Delete category"""  
+        _category = self.repository.get(id)
+        _category.delete()
+        return self.response(
+            msg="Succesfuly delete", 
+            data={"id": id})
+
+    def update(self, id: int, category: category.Category):
+        """Update category"""    
+
+        _category = self.repository.update(id, **category)
+
+        return self.response(
+            msg="Succesfuly update ", 
+            data=_category.parse())

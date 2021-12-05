@@ -43,19 +43,13 @@ class BaseModel(schema.BaseSchema):
             cls.session.rollback()
             raise HTTPException(status_code=403, detail={
                 'ok': False,
-                'msg': str(err.__dict__.get("orig", ""))
+                'errors': err.args
             })
 
 
     @classmethod
     def get(cls, id) -> object:
         obj = cls.query.get(id)
-        if not obj:
-            raise HTTPException(status_code=403, detail={
-                'ok': False,
-                'msg': f"NOT FOUND {cls.__name__} {id}",
-                "data": {"id": id}
-            })
         return obj
 
     def save(self) -> list:
@@ -68,7 +62,7 @@ class BaseModel(schema.BaseSchema):
             self.session.rollback()
             raise HTTPException(status_code=403, detail={
                 'ok': False,
-                'msg': str(err.__dict__.get("orig", ""))
+                'errors': err.args
             })
 
     def update(self, **kw:dict) -> list:
@@ -78,10 +72,9 @@ class BaseModel(schema.BaseSchema):
             self.session.commit()
             return obj.first()
         except exc.SQLAlchemyError as err:
-            
             raise HTTPException(status_code=403, detail={
                 'ok': False,
-                'msg': str(err.__dict__.get("orig", ""))
+                'errors': err.args
             })
     
     def delete(self):
@@ -93,7 +86,7 @@ class BaseModel(schema.BaseSchema):
             self.session.rollback()
             raise HTTPException(status_code=403, detail={
                 'ok': False,
-                'msg': str(err.__dict__.get("orig", ""))
+                'errors': err.args
             })
 
     def __repr__(self) -> str:

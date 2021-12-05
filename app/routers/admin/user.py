@@ -7,7 +7,7 @@ from app.models.user import User
 
 router = APIRouter(
         prefix="/user", 
-        # dependencies=[ AuthorizeRole(["admin"])]
+        dependencies=[ AuthorizeRole(["admin"]) ]
     )
 
 @resource(router, path="")
@@ -23,16 +23,28 @@ class UserResource(BaseResource):
         user = AdminUser(**self.body)
         new_user = self.repository.create(**user.dict())
 
-        return new_user.parse()
+        return self.response(
+            msg="Succesfuly delete", 
+            data=new_user.parse())
 
-    def update(self, id: int):
+    def show(self, id):
+
+        return self.repository.get(id).parse()
+
+    def delete(self, id):
+        user = self.repository.get(id)
+        user.delete()
+        return self.response(
+            msg="Succesfuly delete", 
+            data={"id": id})
+
+    def update(self, id: int, active = Body(1)):
         """Active Account"""    
 
-        user = self.repository.update(id, self.body.get("active", 1))
-        if user:
-            return self.response(
-                msg="Succesfuly update ", 
-                data=user.parse()
-            )
-        
-        raise HTTPException(404, dict(msg=f"Not found user {id}"))
+        user = self.repository.update(id, **{
+                    "is_active": active
+                })
+
+        return self.response(
+            msg="Succesfuly update ", 
+            data=user.parse())

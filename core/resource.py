@@ -71,8 +71,7 @@ class BaseResource:
                 "msg": "Unprocessable entity"
             })
 
-    @classmethod
-    def response(cls, 
+    def response(self, 
             ok: str=True, 
             data: dict=None, 
             msg: str= None,

@@ -31,29 +31,6 @@ class User(Model, TimeStamp):
         if self.employee and self.has_roles(["employee"]):
             return self.employee 
         
-    def create_profile(self, **kw:dict):
-        """Create profile customer or employee"""
-
-        # Employee, Customer
-        if not self.customer and self.has_roles(["customer"]):
-            _customer = customer.Customer(**kw)
-            self.customer = _customer
-            self.save()
-            
-            return self.customer 
-
-        if not self.employee and self.has_roles(["employee"]):
-            _employee = employee.Employee(**kw)
-            self.employee = _employee
-            self.save()
-
-            return self.employee 
-
-        raise HTTPException(404, detail={
-            "ok": False,
-            "msg": "Not found profile"
-        })
-
 
     @classmethod
     def create(cls, **kw):
@@ -73,11 +50,6 @@ class User(Model, TimeStamp):
         if user:
             if verify_password(password, user.password):
                 return user
-
-
-    def set_role(self, roleId: int) -> None:
-        self.role = role.Role.get(roleId)
-        self.save()
 
     def __repr__(self) -> str:
         return f"<User (username={self.username}, id={self.id})>"

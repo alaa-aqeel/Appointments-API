@@ -2,14 +2,13 @@ from fastapi import Body, APIRouter
 from core.resource import resource, BaseResource
 from app.schemas.user import AdminUser
 from app.repositories.user_repository import UserRepository
-from app.models.user import User  
 
 router = APIRouter(prefix="/user")
 
 @resource(router)
 class UserResource(BaseResource):
 
-    repository = UserRepository(User)
+    repository = UserRepository()
 
     def index(self):
 

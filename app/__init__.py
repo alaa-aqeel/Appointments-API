@@ -38,6 +38,4 @@ def create_app():
     __init_rotuer(app)
     __init__handler(app)
 
-
-
     return app 

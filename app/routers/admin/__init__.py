@@ -4,7 +4,7 @@ from core.depends import AuthorizeRole
 
 router = APIRouter(
     prefix="/admin",
-    dependencies=[ AuthorizeRole(["admin"]) ]
+    # dependencies=[ AuthorizeRole(["admin"]) ]
 )
 
 router.include_router(category.router)

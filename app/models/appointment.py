@@ -1,4 +1,6 @@
-from core.database.model import Model, Column, types, relationship, ForeignKey, TimeStamp
+from core.database.model import (Model, 
+                        Column, types,  relationship, 
+                        ForeignKey, TimeStamp)
 
 
 class Appointment(Model, TimeStamp):
@@ -18,6 +20,12 @@ class Appointment(Model, TimeStamp):
     employee = relationship("Employee", 
                     backref="appointments", 
                     foreign_keys="Appointment.employee_id")
+
+    # One WorkHours TO Many Appointment
+    date_id = Column(types.Integer, ForeignKey('WorkHours.id'))
+    date = relationship("WorkHours", 
+                    backref="appointments", 
+                    foreign_keys="Appointment.date_id")
 
     def __repr__(self) -> str:
         return f"<Appointment (status={self.status}, id={self.id})>"

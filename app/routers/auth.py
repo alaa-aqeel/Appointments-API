@@ -3,8 +3,11 @@ from fastapi_jwt_auth import AuthJWT
 from app.schemas import AuthUser, UserProfile
 from app.models import User, DenyListToken
 from core.depends import Authorize, RefreshToken
+from app.repositories.user_repository import UserRepository
+
 
 router = APIRouter()
+repository = UserRepository()
 
 @router.post("/login")
 def login(user: AuthUser, jwt: AuthJWT= Depends()):
@@ -28,12 +31,7 @@ def login(user: AuthUser, jwt: AuthJWT= Depends()):
 @router.post("/register")
 def register(user: AuthUser):
 
-    data = user.dict()
-    role = data.pop("role", 1) 
-
-    new_user = User.create(**data)
-    new_user.set_role(role)
-
+    new_user = repository.create(**user.dict())
     return user.response(data=new_user.parse())
 
 @router.post("/logout", dependencies=[Authorize])

@@ -1,8 +1,10 @@
 import inspect
-from fastapi import Depends, Request, Body, HTTPException
+from fastapi_utils.cbv import _init_cbv
+from fastapi import Depends, Request, HTTPException
 
+ # from fastapi_utils.cbv as _update_cbv_route_endpoint_signature
 def __update_endpoint(cls, endpoint):
-
+    """Update parameters for endpoint"""
     _endpoint = endpoint
     # get signature for endpoint 
     sig = inspect.signature(_endpoint)
@@ -27,14 +29,17 @@ def __update_endpoint(cls, endpoint):
     return _endpoint
 
 def __add_router(router, cls, endpoint, path="", method="GET"):
-
+    """Add router and update endpoind"""
     endpoint = __update_endpoint(cls, endpoint)
     router.add_api_route(path, endpoint, methods=[method])
 
 def resource(router, path: str=""):
-
+    """Create router for class """
     def call_func(cls):
 
+        # from fastapi_utils.cbv
+        _init_cbv(cls) 
+        
         if hasattr(cls, "index"):
             __add_router(router, cls, cls.index, path=path)
 
@@ -49,14 +54,14 @@ def resource(router, path: str=""):
 
         if hasattr(cls, "delete"):
             __add_router(router, cls, cls.delete, path=path+"/{id}", method="DELETE")
-
+            
         return cls 
 
     return call_func
 
 
 class BaseResource:
-
+ 
     def __init__(self, request: Request):
         self.request = request 
         

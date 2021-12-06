@@ -1,8 +1,9 @@
 from enum import Enum
 from datetime import datetime, date
 from typing import Optional, List
+from app.models import category
 from core.database.schema import BaseModel
-
+from app.schemas.category import CategoryReadOnly
 class GenderEnum(str, Enum):
     male = 'male'
     female = 'female'
@@ -35,5 +36,6 @@ class CustomerReadOnly(Customer):
 
 class EmployeeReadOnly(Employee):
     id: int 
-    avatar: str 
+    avatar: Optional[str]
     created_at: datetime
+    category: CategoryReadOnly

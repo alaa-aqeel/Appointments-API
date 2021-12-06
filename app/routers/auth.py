@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi_jwt_auth import AuthJWT
 from app.schemas import AuthUser, UserProfile
 from app.models import User, DenyListToken
@@ -15,7 +15,9 @@ def login(user: AuthUser, jwt: AuthJWT= Depends()):
     login_user = User.login(username=user.username, 
                             password=user.password)
     if not login_user:
-        return user.response(ok=False, msg="username or password invalid")
+        raise HTTPException(422, 
+                user.response(ok=False, 
+                            msg="username or password invalid"))
 
     token = jwt.create_access_token(subject=login_user.id)
     refresh_token = jwt.create_refresh_token(subject=login_user.id)

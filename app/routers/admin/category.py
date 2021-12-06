@@ -30,8 +30,7 @@ class CategoryResource(BaseResource):
 
     def delete(self, id):
         """Delete category"""  
-        _category = self.repository.get(id)
-        _category.delete()
+        self.repository.delete(id)
         return self.response(
             msg="Succesfuly delete", 
             data={"id": id})
@@ -39,7 +38,7 @@ class CategoryResource(BaseResource):
     def update(self, id: int, category: category.Category):
         """Update category"""    
 
-        _category = self.repository.update(id, **category)
+        _category = self.repository.update(id, **category.dict())
 
         return self.response(
             msg="Succesfuly update ", 

@@ -17,7 +17,7 @@ def acount(user: object=Authorize):
 def update_account(schema: UserProfile,user: object=Authorize):
     """Update account info"""
     
-    user.update(**schema.dict())
+    user.update(**schema.dict(exclude_unset=True))
     return UserProfile.response(msg="Successfuly update account", data=user.parse())
 
 @router.delete("/")

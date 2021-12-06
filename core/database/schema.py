@@ -29,21 +29,39 @@ class BaseModel(Model):
         else:
             return cls.from_orm(value)
 
+
+    @classmethod
+    def response(self, 
+            ok: str=True, 
+            data: dict=None, 
+            msg: str= None,
+            errors: list=None
+        ):
+        resp = {'ok': ok} 
+        if msg:
+            resp.update(msg=msg)
+            
+        if data:
+            resp.update({"data": data})
+
+        if errors:
+            resp.update({"errors": errors})
+
+        return {"detail":resp}
+
   
 class BaseSchema():
 
-
-    def parse(self, schema=None):
+    def parse(self, schema=None, query=None):
         schema = schema if schema else self.__schema__
-
         return schema.from_orm(self)
 
     @classmethod  
     def parse_all(cls, model: object=None, schema: object =None) -> object:
         """Parse model orm to Pydantic model """
-        schema = schema if schema else cls.__schema__
+        schema = schema if schema  else cls.__schema__
 
-        # if model:
-        #     return parse_obj_as(List[schema], model)
+        if isinstance(model, list):
+            return parse_obj_as(List[schema], model)
 
         return parse_obj_as(List[schema], cls.query.all())

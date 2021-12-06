@@ -1,10 +1,12 @@
 from core.database.model import (Model, 
                         Column, types,  relationship, 
                         ForeignKey, TimeStamp)
-
+                        
+from app.schemas.employee import AppointmentReadOnly
 
 class Appointment(Model, TimeStamp):
 
+    __schema__ = AppointmentReadOnly
 
     desc = Column(types.Text, nullable=True)
     status = Column(types.Enum('await', "confirm", "unconfirm", "cancel"), default="await")
@@ -22,7 +24,7 @@ class Appointment(Model, TimeStamp):
                     foreign_keys="Appointment.employee_id")
 
     # One WorkHours TO Many Appointment
-    date_id = Column(types.Integer, ForeignKey('WorkHours.id'))
+    date_id = Column(types.Integer, ForeignKey('workhours.id'))
     date = relationship("WorkHours", 
                     backref="appointments", 
                     foreign_keys="Appointment.date_id")

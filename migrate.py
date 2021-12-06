@@ -6,20 +6,27 @@ def create_roles() -> Role:
 
     Role(name="customer").save() # 1
     Role(name="employee").save() # 2
-    Role(name="manager").save() # 3
-    Role(name="admin").save() # 4
+    Role(name="admin").save() # 3
 
 def create_users():
 
     User.create(
-        username="manager",
-        password="1234567890"
-    ).set_role(3) # manager
+        username="cus_user",
+        password="1234567890",
+        role_id=1
+    ) # customer
+
+    User.create(
+        username="emp_user",
+        password="1234567890",
+        role_id=2
+    )# employee
 
     User.create(
         username="admin",
-        password="1234567890"
-    ).set_role(4) # admin
+        password="1234567890",
+        role_id=3
+    ) # admin 
 
 
 if __name__ == "__main__":
@@ -27,6 +34,9 @@ if __name__ == "__main__":
     # create all tables 
     model.migrate()
 
-    create_roles()
-    create_users()
+    try:
+        create_roles()
+        create_users()
+    except Exception as err:
+        print(err.args) 
 

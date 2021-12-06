@@ -34,6 +34,14 @@ class AdminUser(User):
     password: str
     is_active: Optional[bool] = False
 
+class AdminUpdateUser(BaseModel):
+    is_active: bool = False
+    role: int = 1
+    password: Optional[str]
+
+    class Config:
+        orm_mode = True  
+
 class UserProfile(User):
     password: str
      

@@ -1,9 +1,9 @@
 from core.database.model import Model, Column, types, relationship, ForeignKey
-
+from app.schemas.employee import WorkHoursReadOnly
 
 class WorkHours(Model):
 
-    __schema__ = None
+    __schema__ = WorkHoursReadOnly
 
   
     date = Column(types.Date)

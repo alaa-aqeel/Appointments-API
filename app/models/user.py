@@ -30,26 +30,22 @@ class User(Model, TimeStamp):
 
         if self.employee and self.has_roles(["employee"]):
             return self.employee 
-        
 
     @classmethod
     def create(cls, **kw):
         kw["password"] = generate_password_hash(kw['password'])
-        
         return super().create(**kw)
 
     def update(self, **kw):
-        if kw.get("password"):
-            kw["password"] = generate_password_hash(kw['password'])
-        return super().update(**kw)
+        if password := kw.get("password", None):
+            kw['password'] = generate_password_hash(password)
+        return super().save(**kw)
 
     @classmethod
     def login(cls, username: str, password: str):
+
         user = cls.query.filter_by(username=username).first()
-        
-        if user:
-            if verify_password(password, user.password):
-                return user
+        return  user if user and verify_password(password, user.password) else None 
 
     def __repr__(self) -> str:
         return f"<User (username={self.username}, id={self.id})>"

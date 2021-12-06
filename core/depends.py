@@ -42,7 +42,7 @@ def authorize_role(roles: list) -> Depends:
 
     def check_role(_user = Depends(authorize)) -> user.User:
         if not _user.has_roles(roles):
-            raise HTTPException(status_code=401, detail={
+            raise HTTPException(status_code=403, detail={
                 "ok": False,
                 "msg": "Access Deny"
             })
@@ -51,6 +51,17 @@ def authorize_role(roles: list) -> Depends:
         
     return Depends(check_role)
 
+def get_account_profile(request: Request):
+    user = getattr(request.state, "user", None)
+
+    if user:
+        if profile := user.get_profile:
+            return profile
+
+    raise HTTPException(status_code=428, detail={
+        "ok": False,
+        "msg": "Precondition Required"
+    })
 
 async def get_body_porfile(request: Request):
     user = getattr(request.state, "user", None)
@@ -63,7 +74,7 @@ async def get_body_porfile(request: Request):
         elif user.has_roles(['employee']):
             return profile.Employee(**json)
 
-        raise HTTPException(status_code=401, detail={
+        raise HTTPException(status_code=403, detail={
             "ok": False,
             "msg": "Access Deny"
         })
@@ -77,3 +88,4 @@ Authorize = Depends(authorize)
 AuthorizeRole = authorize_role # is decorator -> authorize_role([roles name])
 RefreshToken = Depends(authorize_refresh)
 GetProfile = Depends(get_body_porfile)
+Profile = Depends(get_account_profile)

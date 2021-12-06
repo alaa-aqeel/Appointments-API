@@ -51,13 +51,29 @@ class BaseModel(schema.BaseSchema):
     def get(cls, id) -> object:
         obj = cls.query.get(id)
         return obj
+    
+    @classmethod
+    def update(cls, id, **kw:dict) -> list:
+        try:
+            obj = cls.query.filter_by(id=id)
+            obj.update(kw)
+            cls.session.commit()
+            return obj.first()
+        except exc.SQLAlchemyError as err:
+            raise HTTPException(status_code=403, detail={
+                'ok': False,
+                'errors': err.args
+            })  
 
-    def save(self) -> list:
+    def save(self, **kw) -> list:
         """Commit object"""
         try: 
-            self.session.add(self)
+            if kw:
+                self.query.filter_by(id=self.id).update(kw)
+            else:
+                self.session.add(self)
             self.session.commit()
-            return True, self
+            return 1
         except exc.SQLAlchemyError as err:
             self.session.rollback()
             raise HTTPException(status_code=403, detail={
@@ -65,18 +81,18 @@ class BaseModel(schema.BaseSchema):
                 'errors': err.args
             })
 
-    def update(self, **kw:dict) -> list:
-        try:
-            obj = self.query.filter_by(id=self.id)
-            obj.update(kw)
-            self.session.commit()
-            return obj.first()
-        except exc.SQLAlchemyError as err:
-            raise HTTPException(status_code=403, detail={
-                'ok': False,
-                'errors': err.args
-            })
-    
+    # def update(self, **kw:dict) -> list:
+    #     try:
+    #         obj = self.query.filter_by(id=self.id)
+    #         obj.update(kw)
+    #         self.session.commit()
+    #         return obj.first()
+    #     except exc.SQLAlchemyError as err:
+    #         raise HTTPException(status_code=403, detail={
+    #             'ok': False,
+    #             'errors': err.args
+    #         })
+
     def delete(self):
         try: 
             self.session.delete(self)

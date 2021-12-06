@@ -1,7 +1,8 @@
 from fastapi import Body, APIRouter
 from core.resource import resource, BaseResource
-from app.schemas.user import AdminUser
+from app.schemas.user import AdminUser, AdminUpdateUser
 from app.repositories.user_repository import UserRepository
+
 
 router = APIRouter(prefix="/user")
 
@@ -10,9 +11,9 @@ class UserResource(BaseResource):
 
     repository = UserRepository()
 
-    def index(self):
+    def index(self, role: int=None):
 
-        return self.repository.all()
+        return self.repository.all(role)
 
     def store(self, user: AdminUser):
         new_user = self.repository.create(**user.dict())
@@ -32,12 +33,10 @@ class UserResource(BaseResource):
             msg="Succesfuly delete", 
             data={"id": id})
 
-    def update(self, id: int, active = Body(1, embed=True)):
+    def update(self, id: int, user: AdminUpdateUser):
         """Active Account"""    
 
-        user = self.repository.update(id, **{
-                    "is_active": active
-                })
+        user = self.repository.update(id, **user.dict(exclude_unset=True))
 
         return self.response(
             msg="Succesfuly update ", 

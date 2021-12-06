@@ -1,6 +1,7 @@
 import inspect
 from fastapi_utils.cbv import _init_cbv
 from fastapi import Depends, Request, HTTPException
+from sqlalchemy.sql import expression
 
  # from fastapi_utils.cbv as _update_cbv_route_endpoint_signature
 def __update_endpoint(cls, endpoint):
@@ -64,6 +65,10 @@ class BaseResource:
  
     def __init__(self, request: Request):
         self.request = request 
+        try:
+            self.user = self.request.state.user 
+        except:
+            self.user = None
         
     async def get_json(self):
         

@@ -2,13 +2,12 @@ from fastapi import APIRouter, Request, HTTPException
 from core.depends import AuthorizeRole, GetProfile
 from app.repositories.user_repository import UserRepository
 from fastapi_utils.cbv import cbv
+from core.depends import Profile
 
-router = APIRouter(
-            prefix="/me/profile", 
-            dependencies=[
-                AuthorizeRole(["customer", "employee"])
-            ])
-
+router = APIRouter( 
+    dependencies=[
+        AuthorizeRole(["customer", "employee"])
+    ])
 
 @cbv(router)
 class Profile:
@@ -16,21 +15,13 @@ class Profile:
     request: Request
     repository = UserRepository()
 
-    @router.get("/")
-    def get_profile(self):
+    @router.get("/profile")
+    def get_profile(self, profile = Profile):
         """Get user profile"""
 
-        _profile = self.request.state.user.get_profile
+        return profile.parse()
 
-        if _profile:
-            return _profile.parse()
-
-        raise HTTPException(404, detail={
-            "ok": False,
-            "msg": "NOT FOUND"
-        })
-
-    @router.post("/")
+    @router.post("/profile")
     async def create_profile(self, profile= GetProfile):
         """Create profile"""
         user = self.request.state.user
@@ -45,10 +36,13 @@ class Profile:
         _profile = self.repository.create_profile(user, **profile.dict())
         return _profile.parse()
 
-    @router.put('/')
-    def update_profile_customer(self, profile = GetProfile):
+    @router.put('/profile')
+    def update_profile_customer(self, profile = Profile, body_profile = GetProfile):
         """Update Profile"""
 
-        _profile = self.request.state.user.get_profile 
-        _profile.update(**profile.dict()) 
-        return _profile.parse()
+        data = body_profile.dict()
+        if categoryId := data.pop("category", None):
+            data["category_id"] = int(categoryId)
+            
+        profile.save(**data) 
+        return profile.parse()

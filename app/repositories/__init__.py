@@ -7,12 +7,12 @@ class BaseRepository:
         self.model = model 
 
     def all(self):
-
-        return self.model.parse_all()
+        
+        return self.model.parse_all() if self.model else []
 
     def get(self, id):
-        user =  self.model.get(id)
-        if not user:
+        obj =  self.model.get(id)
+        if not obj:
             raise HTTPException(status_code=404, detail={
                 'ok': False,
                 'msg': f"NOT found {self.model.__name__} {id}",
@@ -20,13 +20,28 @@ class BaseRepository:
                     "id": id
                 }
             })
-        return self.model.get(id)
+        return obj
 
+    def get_or_failed(self, model: object, id: int, query=None):
+        __query = query if query else model.query
+        obj = __query.filter(model.id==id).first()
+        
+        if not obj:
+            raise HTTPException(404, {
+                "ok": False,
+                "msg": f"Not Found {model.__tablename__} {id}"
+            })
+        return obj 
 
     def create(self, **kw):
         return self.model.create(**kw)
 
     def update(self, id, **kw):
-        user = self.get(id)
-        user.update(**kw)
-        return user 
+        obj = self.get(id)
+        if kw:
+            obj.save(**kw)
+        return obj 
+
+    def delete(self, id):
+        obj = self.get(id)
+        obj.delete()

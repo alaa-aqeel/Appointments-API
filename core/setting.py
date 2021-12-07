@@ -1,20 +1,23 @@
 import os 
-from typing import Set
 from pydantic import BaseSettings
 
 
 class Setting(BaseSettings):
 
+    env = "test"
     authjwt_secret_key: str = "SECRETKEY"
     authjwt_denylist_enabled: bool = True
     app_name: str = "Appointment-API"
-    database: dict = {
-        "url": "sqlite:///./sqlite.db",
+    database_url = {
+        "test": "sqlite:///./test_sqlite.db",
+        "prod": "sqlite:///./sqlite.db"
+    }
+    engine_args: dict = {
         "connect_args":{
             "check_same_thread": False
         }
-
     }
+    
     # "postgresql://user:password@postgresserver/db"
 
     allow_origins = [

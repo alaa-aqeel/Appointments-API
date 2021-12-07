@@ -1,8 +1,10 @@
-from sqlalchemy import create_engine, engine_from_config
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from core.setting import setting
 
-engine = create_engine(**setting.database)
+engine = create_engine(
+    url=setting.database_url[setting.env],
+    **setting.engine_args)
 
 SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 

@@ -1,6 +1,6 @@
 from app.models import User, Role
 from core.database import model 
-
+from core.setting import setting
 
 def create_roles() -> Role:
 
@@ -29,14 +29,22 @@ def create_users():
     ) # admin 
 
 
-if __name__ == "__main__":
-    
-    # create all tables 
-    model.migrate()
+def init_reset_database():
 
+    model.drop()
+    model.migrate()
+    
     try:
+        # create default roles 
         create_roles()
+
+        # create dome user 
         create_users()
+
     except Exception as err:
         print(err.args) 
 
+if __name__ == "__main__":
+    
+    # drop and create all tables 
+    init_reset_database()

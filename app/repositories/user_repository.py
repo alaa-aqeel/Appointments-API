@@ -56,12 +56,6 @@ class UserRepository(BaseRepository):
             "msg": "Not found profile"
         })
 
-    def get_role(self, roleId):
-        """set role by role Id"""
-
-        return 
-
-
     def create(self, **kw):
         """create new user"""
 

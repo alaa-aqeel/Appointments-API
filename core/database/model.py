@@ -41,7 +41,7 @@ class BaseModel(schema.BaseSchema):
             return obj 
         except exc.SQLAlchemyError as err:
             cls.session.rollback()
-            raise HTTPException(status_code=403, detail={
+            raise HTTPException(403, detail={
                 'ok': False,
                 'errors': err.args
             })
@@ -121,3 +121,7 @@ Model = declarative_base(cls=BaseModel)
 def migrate():
     
     Model.metadata.create_all(bind=engine)
+
+def drop():
+
+    Model.metadata.drop_all(bind=engine)

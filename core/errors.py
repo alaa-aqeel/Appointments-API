@@ -21,7 +21,7 @@ def __init__handler(app: object):
     @app.exception_handler(ValidationError)
     async def validation_error_handler(request: Request, exc: ValidationError):
         return JSONResponse(
-            status_code=401,
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             content={
                 "detail": {
                     "ok": False,

@@ -4,3 +4,4 @@ testdb.py
 *.db
 *.sqlite
 *.mwb.bak
+storage/*

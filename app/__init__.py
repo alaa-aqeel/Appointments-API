@@ -1,9 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, responses
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_jwt_auth import AuthJWT
 from app.models import token
 from core.errors import __init__handler
 from core.setting import setting
+from core.storage import Storage
 
 
 @AuthJWT.load_config
@@ -29,6 +30,12 @@ def __init_rotuer(app):
     from app.routers import api
 
     app.include_router(api)
+    
+    @app.get("/storage/{filename}")
+    def storage(filename:str):
+
+        path = Storage.full_path(filename)
+        return responses.FileResponse(path)
 
 def create_app():
 

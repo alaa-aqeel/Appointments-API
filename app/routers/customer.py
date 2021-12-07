@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, HTTPException
 from core.resource import resource , BaseResource
 from core.depends import AuthorizeRole, Profile
 from app.models import Employee, WorkHours, Appointment
-from app.schemas.employee import Appointment as  AppointmentSchema, Appointment as  AppointmentSchema
+from app.schemas.appointment import Appointment as  AppointmentSchema, Appointment as  AppointmentSchema
 from app.repositories.emploey_repository import EmployeeRepository 
 from app.repositories.appointment_repository import AppointmentRepository 
 
@@ -58,7 +58,7 @@ class AppointmentResource(BaseResource):
 
     def delete(self, id):
 
-        obj = self.repository.get(id)
+        obj = self.repository.get_or_failed(Appointment, id)
         obj.status = "cancel"
         obj.save()
 

@@ -4,6 +4,8 @@ from typing import Optional, List
 from app.models import category
 from core.database.schema import BaseModel
 from app.schemas.category import CategoryReadOnly
+
+
 class GenderEnum(str, Enum):
     male = 'male'
     female = 'female'
@@ -31,11 +33,11 @@ class Employee(Profile):
 
 class CustomerReadOnly(Customer):
     id: int 
-    age: int
-    created_at: datetime
+    age: Optional[int]
+    created_at: Optional[datetime]
 
 class EmployeeReadOnly(Employee):
     id: int 
     avatar: Optional[str]
-    created_at: datetime
-    category: CategoryReadOnly
+    created_at: Optional[datetime]
+    category: Optional[CategoryReadOnly]

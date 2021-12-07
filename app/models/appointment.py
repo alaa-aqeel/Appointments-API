@@ -2,7 +2,7 @@ from core.database.model import (Model,
                         Column, types,  relationship, 
                         ForeignKey, TimeStamp)
                         
-from app.schemas.employee import AppointmentReadOnly
+from app.schemas.appointment import AppointmentReadOnly
 
 class Appointment(Model, TimeStamp):
 
@@ -28,6 +28,11 @@ class Appointment(Model, TimeStamp):
     date = relationship("WorkHours", 
                     backref="appointments", 
                     foreign_keys="Appointment.date_id")
+
+
+    @classmethod
+    def filter_date(cls, date):
+        return cls.query.filter(Appointment.date.has(date=date))
 
     def __repr__(self) -> str:
         return f"<Appointment (status={self.status}, id={self.id})>"

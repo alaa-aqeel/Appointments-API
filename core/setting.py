@@ -17,9 +17,7 @@ class Setting(BaseSettings):
     # "postgresql://user:password@postgresserver/db"
 
     allow_origins = [
-        "http://localhost.tiangolo.com",
-        "https://localhost.tiangolo.com",
-        "http://localhost",
+        "http://127.0.0.1:8000",
         "http://localhost:8080",
     ]
 

@@ -1,7 +1,7 @@
 from sqlalchemy import or_
 from fastapi.exceptions import HTTPException
 from app.models import Appointment, WorkHours, Employee, Customer
-from app.schemas.employee import StatusEum
+from app.schemas.appointment import StatusEum
 from app.repositories import BaseRepository 
 
 
@@ -30,6 +30,7 @@ class AppointmentRepository(BaseRepository):
 
     def get(self, id: int) -> Appointment:
         """Get Appointment by id"""
+        
         return self.get_or_failed(Appointment, id, self.__query_for())
 
     def get_work_hours(self, id):

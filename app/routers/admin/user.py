@@ -1,6 +1,6 @@
 from fastapi import Body, APIRouter
 from core.resource import resource, BaseResource
-from app.schemas.user import AdminUser, AdminUpdateUser
+from app.schemas.user import AdminUser, AdminUpdateUser, CustomerProfileReadOnly, EmployeeProfileReadOnly
 from app.repositories.user_repository import UserRepository
 
 
@@ -23,12 +23,20 @@ class UserResource(BaseResource):
             data=new_user.parse())
 
     def show(self, id):
+        obj = self.repository.get_or_failed(self.repository.model, id)
+        
+        if obj.customer: 
+            return obj.parse(CustomerProfileReadOnly)
+        
+        if obj.employee:
+  
+            return obj.parse(EmployeeProfileReadOnly)
 
-        return self.repository.get(id).parse()
+        return obj.parse()
 
     def delete(self, id):
-        user = self.repository.get(id)
-        user.delete()
+        self.repository.delete()
+
         return self.response(
             msg="Succesfuly delete", 
             data={"id": id})

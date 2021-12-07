@@ -20,17 +20,8 @@ class UserRepository(BaseRepository):
         return User.parse_all()
 
     def get_category(self, categoryId):
-        category = Category.get(categoryId) 
-        if category:
-            return category 
 
-        raise HTTPException(status_code=404, detail={
-            'ok': False,
-            'msg': f"Not found category {categoryId}",
-            "data": {
-                "id": categoryId
-            }
-        })
+        return self.get_or_failed(Category, categoryId) 
 
     def __create_customer_profile(self, user: User, **kw):
         """Create profile customer"""
@@ -60,7 +51,7 @@ class UserRepository(BaseRepository):
         if not user.employee and user.has_roles(["employee"]):
             return self.__create_employee_profile(user, **kw)
 
-        raise HTTPException(404, detail={
+        self.abort(404, {
             "ok": False,
             "msg": "Not found profile"
         })
@@ -68,22 +59,13 @@ class UserRepository(BaseRepository):
     def get_role(self, roleId):
         """set role by role Id"""
 
-        role = Role.get(roleId) 
-        if role:
-            return role 
+        return 
 
-        raise HTTPException(status_code=404, detail={
-            'ok': False,
-            'msg': f"NOT found role {id}",
-            "data": {
-                "id": id
-            }
-        })
 
     def create(self, **kw):
         """create new user"""
 
-        kw['role'] = self.get_role(kw.get('role', 1))
+        kw['role'] = self.get_or_failed(Role, kw.get('role', 1))
         user = super().create(**kw)
 
         return user
@@ -92,6 +74,6 @@ class UserRepository(BaseRepository):
         """create new user"""
         
         if roleId := kw.pop("role", None):
-            kw['role_id'] = self.get_role(roleId).id
+            kw['role_id'] = self.get_or_failed(Role, kw.get('role', roleId)).id
         user = super().update(id, **kw)
         return user 

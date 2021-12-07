@@ -21,7 +21,7 @@ class WorkHoursRepository(BaseRepository):
         
         return self.filter_employee.all()
 
-    def get(self,id: int): 
+    def get(self, id: int): 
         """Get work hour for employee by id"""
   
         return self.get_or_failed(self.model, id, self.filter_employee)

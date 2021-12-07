@@ -26,7 +26,7 @@ class CategoryResource(BaseResource):
 
     def show(self, id):
         """Get one category"""  
-        return self.repository.get(id).parse()
+        return self.repository.get_or_failed(Category, id).parse()
 
     def delete(self, id):
         """Delete category"""  

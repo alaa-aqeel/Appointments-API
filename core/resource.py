@@ -1,9 +1,8 @@
 import inspect
 from fastapi_utils.cbv import _init_cbv
 from fastapi import Depends, Request, HTTPException
-from sqlalchemy.sql import expression
 
- # from fastapi_utils.cbv as _update_cbv_route_endpoint_signature
+
 def __update_endpoint(cls, endpoint):
     """Update parameters for endpoint"""
     _endpoint = endpoint
@@ -38,7 +37,7 @@ def resource(router, path: str=""):
     """Create router for class """
     def call_func(cls):
 
-        # from fastapi_utils.cbv
+        # fastapi_utils.cbv
         _init_cbv(cls) 
         
         if hasattr(cls, "index"):
@@ -70,16 +69,9 @@ class BaseResource:
         except:
             self.user = None
         
-    async def get_json(self):
-        
-        try:
-            return await self.request.json()
+    def abort(self, status:int, detail:dict, headers: dict):
 
-        except :
-            raise HTTPException(422 , detail={
-                "ok": False,
-                "msg": "Unprocessable entity"
-            })
+        raise HTTPException(status_code=status, detail=detail, headers=headers)
 
     def response(self, 
             ok: str=True, 

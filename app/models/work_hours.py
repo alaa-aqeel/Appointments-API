@@ -1,5 +1,5 @@
 from core.database.model import Model, Column, types, relationship, ForeignKey
-from app.schemas.employee import WorkHoursReadOnly
+from app.schemas.work_hours import WorkHoursReadOnly
 
 class WorkHours(Model):
 

@@ -10,10 +10,13 @@ class BaseRepository:
         
         return self.model.parse_all() if self.model else []
 
+    def abort(self, status, detail):
+        raise HTTPException(status_code=status, detail=detail)
+
     def get(self, id):
         obj =  self.model.get(id)
         if not obj:
-            raise HTTPException(status_code=404, detail={
+            self.abort(404,{
                 'ok': False,
                 'msg': f"NOT found {self.model.__name__} {id}",
                 "data": {
@@ -27,21 +30,22 @@ class BaseRepository:
         obj = __query.filter(model.id==id).first()
         
         if not obj:
-            raise HTTPException(404, {
+            self.abort(404,{
                 "ok": False,
                 "msg": f"Not Found {model.__tablename__} {id}"
             })
+            
         return obj 
 
     def create(self, **kw):
         return self.model.create(**kw)
 
     def update(self, id, **kw):
-        obj = self.get(id)
+        obj = self.get_or_failed(self.model, id)
         if kw:
             obj.save(**kw)
         return obj 
 
     def delete(self, id):
-        obj = self.get(id)
+        obj = self.get_or_failed(self.model, id)
         obj.delete()

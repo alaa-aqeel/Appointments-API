@@ -1,7 +1,8 @@
 from datetime import datetime
 from enum import IntEnum, Enum
-from typing import Optional, List
+from typing import Optional
 from core.database.schema import BaseModel
+from app.schemas.profile import CustomerReadOnly, EmployeeReadOnly
 
 class Role(BaseModel):
     id: int 
@@ -10,7 +11,6 @@ class Role(BaseModel):
 
     class Config:
         orm_mode = True
-
 
 class User(BaseModel):
     username: str
@@ -52,3 +52,10 @@ class UserReadOnly(User):
     updated_at: Optional[datetime]
     last_login: Optional[datetime]
     is_active: Optional[bool] = False
+
+
+class CustomerProfileReadOnly(UserReadOnly):
+    customer: Optional[CustomerReadOnly]
+
+class EmployeeProfileReadOnly(UserReadOnly):
+    employee:  Optional[EmployeeReadOnly]

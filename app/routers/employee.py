@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request
 from core.depends import AuthorizeRole, Profile
 from core.resource import resource , BaseResource
 from app.repositories.work_hours_repository import WorkHoursRepository
 from app.repositories.appointment_repository import AppointmentRepository
-from app.models.work_hours import WorkHours as WorkHoursModel
-from app.schemas.employee import WorkHours as WorkHoursSchema, AppointmentEmployee, AppointmentEmployeeReadOnly
+from app.schemas.appointment import AppointmentEmployee
+from app.schemas.work_hours import WorkHours as WorkHoursSchema
 from app.models.appointment import Appointment as AppointmentModel
 
 router = APIRouter(

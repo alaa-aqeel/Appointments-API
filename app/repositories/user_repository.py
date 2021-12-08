@@ -12,7 +12,7 @@ class UserRepository(BaseRepository):
 
     
     def all(self, role=None):
-
+        """Get all users"""
         if role := Role.get(role):
             objs = User.query.filter(User.role==role).all()
             return User.parse_all(model=objs)
@@ -20,6 +20,7 @@ class UserRepository(BaseRepository):
         return User.parse_all()
 
     def get_category(self, categoryId):
+        """Get Category"""
 
         return self.get_or_failed(Category, categoryId) 
 

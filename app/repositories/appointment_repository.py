@@ -51,7 +51,7 @@ class AppointmentRepository(BaseRepository):
 
 
     def update(self, id, date: int, status: str= StatusEum.confirm):
-
+        """Update date or status for appointment"""
         date = self.get_work_hours(date)
         obj = self.model.update(id, **{
             'employee_id': date.employee_id,

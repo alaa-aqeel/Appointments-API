@@ -14,7 +14,7 @@ class EmployeeRepository(BaseRepository):
         return self.get_or_failed(Employee, id)
 
     def get_work_hours(self, employee_id, is_actived=True):
-        
+        """Get work hours for employee"""
         return WorkHours.query.filter(
             WorkHours.employee_id==employee_id,
             WorkHours.is_active==is_actived).all()

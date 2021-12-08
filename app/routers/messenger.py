@@ -16,8 +16,9 @@ router = APIRouter(
 
 @router.get("/user/{id}")
 def show_chat_by_user(id: int, request: Request):#{
-    repository = MessengerRepository(request.state.user)
+    """Get all messages by user id"""
 
+    repository = MessengerRepository(request.state.user)
     if request.state.user.id == id:
         repository.abort(424 , {
             "msg": "Woow impressive !!"
@@ -40,12 +41,14 @@ class Messenger(BaseResource):
         self.repository = MessengerRepository(self.user)
         
     def index(self): #{ 
+        """Get all chat"""
 
         chats = self.repository.chat_current_user().all()
         return Chat.parse_all(chats, ChatUsers)
     #}
 
     def show(self, id: int):#{
+        """Get all messages by chat id"""
 
         chats = chats = self.repository.chat_current_user().filter(Chat.id==id).first()
         return chats.parse()
@@ -73,16 +76,15 @@ class Messages(BaseResource):
 
 
     def update(self, id: int, text:str=Body(None, embed=True)): # { 
-        
+        """Update message"""
         msg = self.repository.update(id, text)
-
         return self.response(msg=f"Successfuly update msg {id}", data=msg.parse())  
     #}
 
 
     def delete(self, id: int): #{ 
-        
-        self.repository.delete(id)
+        """Delete message"""
 
+        self.repository.delete(id)
         return self.response(msg=f"Successfuly delete msg {id}")       
     #}

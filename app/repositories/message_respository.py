@@ -18,12 +18,14 @@ class MessengerRepository(BaseRepository):
         return Chat.query.join(Chat.users).filter(User.id==self.current_user.id)
 
     def chat_user_query(self, user): # { 
-        
+        """Query to get all chat for user"""
+
         return Chat.session.query(Chat.id).join(Chat.users).filter(User.id==user.id)
     #}
 
     
     def chat_between_users(self, user1, user2):# { 
+        """Query to get chat between user and current user"""
 
         chats = Chat.query.join(Chat.users).filter(
             or_(User.id==user1.id, User.id==user2.id),
@@ -35,17 +37,18 @@ class MessengerRepository(BaseRepository):
     #}
 
     def chat_with(self, user):# { 
-        
+        """Get chat between user and current user"""
+
         return self.chat_between_users(self.current_user, user)
     #}
 
     def create_message(self, text, chat):# {
-
+        """Create message"""
         return Message.create(text=text, user=self.current_user, chat=chat)
     # } 
 
     def create_chat(self, user_1, user_2):# {
-
+        """Create chat between tow user"""
         chat = Chat.create()
         chat.users = [user_1, user_2]
         chat.save()
@@ -53,18 +56,20 @@ class MessengerRepository(BaseRepository):
     #}
 
     def create(self, text, to): # {
-
+        """Create message and create chat or get current chat"""
+        
         to_user = self.get_or_failed(User, to) 
+
         chat = self.chat_with(to_user).first()
         if not chat:
             chat = self.create_chat(to_user, self.current_user)
 
         msg = self.create_message(text, chat)
-        
         return msg
     # }
 
     def get_message(self, msgId): #{ 
+        """get message for current user"""
 
         return self.get_or_failed(Message, msgId, Message.query.filter(
                         Message.user.has(id=self.current_user.id)
@@ -73,6 +78,7 @@ class MessengerRepository(BaseRepository):
         
 
     def update(self, msgId, text): #{ 
+        """update message"""
 
         msg = self.get_message(msgId)
         print(msg)
@@ -82,6 +88,8 @@ class MessengerRepository(BaseRepository):
     #}
 
     def delete(self, msgId): # {
+        """Delete message"""
+
         msg = self.get_message(msgId)   
         msg.delete()
         return msg 

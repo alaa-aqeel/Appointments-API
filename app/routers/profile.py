@@ -13,23 +13,22 @@ router = APIRouter(
 @cbv(router)
 class Profile:
 
-    def __init__(self,request: Request, profile = Profile):
+    def __init__(self,request: Request):
 
         self.repository = UserRepository()
-        self.profile = profile
         self.user = request.state.user
 
     @router.get("/profile")
-    def get_profile(self, ):
+    def get_profile(self, profile = Profile):
         """Get user profile"""
 
-        return self.profile.parse()
+        return profile.parse()
 
     @router.post("/profile")
     async def create_profile(self, profile= GetProfile):
         """Create profile"""
 
-        if self.profile:
+        if self.user.profile:
             self.repository.abort(404, detail={
                 "ok": False,
                 "msg": "Not Fond"
@@ -39,19 +38,19 @@ class Profile:
         return _profile.parse()
 
     @router.put('/profile')
-    def update_profile_customer(self, body_profile = GetProfile):
+    def update_profile_customer(self, profile = Profile, body_profile = GetProfile):
         """Update Profile"""
 
         data = body_profile.dict()
         if categoryId := data.pop("category", None):
             data["category_id"] = int(categoryId)
             
-        self.profile.save(**data) 
-        return self.profile.parse()
+        profile.save(**data) 
+        return profile.parse()
 
 
     @router.post("/profile/avatar")
-    async def update_employee_avatar(self, avatar: UploadFile = File(None)):
+    async def update_employee_avatar(self, profile = Profile, avatar: UploadFile = File(None)):
 
         if not self.user.has_roles(['employee']):
             self.repository.abort(403, {"msg": "Opss access deny !!"})
@@ -63,8 +62,8 @@ class Profile:
             })
 
         avatar_name = await Storage.store_file(avatar)
-        self.profile.avatar = avatar_name
-        self.profile.save()
+        profile.avatar = avatar_name
+        profile.save()
 
         return {
             "ok": True,

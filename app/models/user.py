@@ -18,12 +18,15 @@ class User(Model, TimeStamp):
     role_id = Column(types.Integer, ForeignKey('role.id'))
     role = relationship('Role', back_populates="users")
 
+    chats = relationship("Chat",
+        secondary="chats_users",
+        back_populates="users")
 
     def has_roles(self, names: list):
         return self.role.name in names
 
     @property
-    def get_profile(self):
+    def profile(self):
 
         if self.customer and self.has_roles(["customer"]):
             return self.customer 

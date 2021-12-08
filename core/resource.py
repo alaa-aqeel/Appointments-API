@@ -69,9 +69,9 @@ class BaseResource:
         except:
             self.user = None
         
-    def abort(self, status:int, detail:dict, headers: dict):
+    def abort(self, status:int, detail:dict):
 
-        raise HTTPException(status_code=status, detail=detail, headers=headers)
+        raise HTTPException(status_code=status, detail=detail)
 
     def response(self, 
             ok: str=True, 

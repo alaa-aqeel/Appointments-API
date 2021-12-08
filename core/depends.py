@@ -55,7 +55,7 @@ def get_account_profile(request: Request):
     user = getattr(request.state, "user", None)
 
     if user:
-        if profile := user.get_profile:
+        if profile := user.profile:
             return profile
 
     raise HTTPException(status_code=428, detail={

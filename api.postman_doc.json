@@ -1,0 +1,964 @@
+{
+	"info": {
+		"_postman_id": "22ba033b-60a3-49f6-936c-c61acb9ddfb9",
+		"name": "Appointment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Account",
+					"item": [
+						{
+							"name": "Account",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTYzODkxNjQwMSwibmJmIjoxNjM4OTE2NDAxLCJqdGkiOiI4Zjg3ZDA1NC0xN2QwLTQ1OGQtYTc0My1mNWY4MDUyZWUzZGIiLCJleHAiOjE2Mzg5MTczMDEsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.RXQ52JfKWGkny5dZfJPUv465WAXsJns-uIn7jmU_WZ0"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"username\": \"admin\",\r\n   \"password\": \"1234567890\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/me"
+							},
+							"response": []
+						},
+						{
+							"name": "Update account",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlhdCI6MTYzODY1ODcyOCwibmJmIjoxNjM4NjU4NzI4LCJqdGkiOiIzZGQ2MzljMi01NWRlLTRmYjgtYTllOS0xM2FlM2ZmZmViMmUiLCJleHAiOjE2Mzg2NTk2MjgsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.NCxqF5ToLaRAfh8NCiYLC1OG4FYjaBKPrMlfcoy9ODk"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"username\": \"admin\",\r\n   \"password\": \"1234567890\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/me"
+							},
+							"response": []
+						},
+						{
+							"name": "update account",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"username\": \"cus_user\",\r\n   \"password\": \"123456789\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/me"
+							},
+							"response": []
+						},
+						{
+							"name": "logout or revoke token",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"username\": \"admin\",\r\n   \"password\": \"1234567890\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/logout"
+							},
+							"response": []
+						},
+						{
+							"name": "refresh token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTYzODg0MjI3NCwibmJmIjoxNjM4ODQyMjc0LCJqdGkiOiJjNjhjYTJkMi0xY2I3LTRiYzYtOGM3Mi1hZWYzYTM3ZjEzMzYiLCJleHAiOjE2Mzg4NDMxNzQsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.al_rqgxYq10xFSKAab06k_sPDIZNZ-uNS-qgWabAafE"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"username\": \"admin\",\r\n   \"password\": \"1234567890\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/refresh"
+							},
+							"response": []
+						},
+						{
+							"name": "refresh revoke",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlhdCI6MTYzODY1ODcyOCwibmJmIjoxNjM4NjU4NzI4LCJqdGkiOiIzZGQ2MzljMi01NWRlLTRmYjgtYTllOS0xM2FlM2ZmZmViMmUiLCJleHAiOjE2Mzg2NTk2MjgsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.NCxqF5ToLaRAfh8NCiYLC1OG4FYjaBKPrMlfcoy9ODk"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"username\": \"admin\",\r\n   \"password\": \"1234567890\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/refresh/revoke"
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": {
+							"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTYzODkxNjQwMSwibmJmIjoxNjM4OTE2NDAxLCJqdGkiOiI4Zjg3ZDA1NC0xN2QwLTQ1OGQtYTc0My1mNWY4MDUyZWUzZGIiLCJleHAiOjE2Mzg5MTczMDEsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.RXQ52JfKWGkny5dZfJPUv465WAXsJns-uIn7jmU_WZ0"
+						}
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"username\": \"emp_user\",\r\n   \"password\": \"1234567890\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"username\": \"customer_user\",\r\n   \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/register"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Init Profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullname\": \"Customer User\",\r\n    \"phone\": \"07802896616\",\r\n    \"gender\": \"male\",\r\n    \"special\": \"doctor code\",\r\n    \"category\": 2,\r\n    \"birthdate\": \"1996-02-12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullname\": \"Customer User\",\r\n    \"phone\": \"07802896616\",\r\n    \"gender\": \"male\",\r\n    \"special\": \"doctor code\",\r\n    \"category\": 2,\r\n    \"birthdate\": \"1996-02-12\",\r\n    \"email\": \"employe@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "update avtar for employee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/alaa/Pictures/Cyberpunk 2077/photomode_06112021_013517.png"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/profile/avatar"
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTYzODkxNjQwMSwibmJmIjoxNjM4OTE2NDAxLCJqdGkiOiI4Zjg3ZDA1NC0xN2QwLTQ1OGQtYTc0My1mNWY4MDUyZWUzZGIiLCJleHAiOjE2Mzg5MTczMDEsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.RXQ52JfKWGkny5dZfJPUv465WAXsJns-uIn7jmU_WZ0"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "get all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": "http://127.0.0.1:8000/api/admin/category/"
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"test 42414\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/admin/category/"
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"test 11\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/admin/category/1"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"test 4\"\r\n}"
+								},
+								"url": "http://127.0.0.1:8000/api/admin/category/1"
+							},
+							"response": []
+						},
+						{
+							"name": "get one",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://127.0.0.1:8000/api/admin/category/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "get all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://127.0.0.1:8000/api/admin/user"
+							},
+							"response": []
+						},
+						{
+							"name": "get one",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://127.0.0.1:8000/api/admin/user/2"
+							},
+							"response": []
+						},
+						{
+							"name": "update account",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"role\": 1,\r\n    \"is_active\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/admin/user/1"
+							},
+							"response": []
+						},
+						{
+							"name": "create new",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"test_user\",\r\n    \"password\": \"123456789\",\r\n    \"role\": 2,\r\n    \"is_active\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/admin/user/"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "http://127.0.0.1:8000/api/admin/user/4"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "appointment",
+					"item": [
+						{
+							"name": "get all appointments",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/appointment/?employee=1&customer=1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"appointment",
+										""
+									],
+									"query": [
+										{
+											"key": "date",
+											"value": "2021-12-12",
+											"disabled": true
+										},
+										{
+											"key": "employee",
+											"value": "1"
+										},
+										{
+											"key": "customer",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get one appointment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://127.0.0.1:8000/api/admin/appointment/8"
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "employee",
+			"item": [
+				{
+					"name": "appointment",
+					"item": [
+						{
+							"name": "get all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://127.0.0.1:8000/api/employee/appointment"
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": 5,\r\n    \"status\": \"unconfirm\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/employee/appointment/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "workhorus",
+					"item": [
+						{
+							"name": "get all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://127.0.0.1:8000/api/employee/workhorus"
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2021-12-10\",\r\n    \"from_hour\": \"12:00\",\r\n    \"to_hour\": \"15:00\",\r\n    \"desc\": \"descption\",\r\n    \"is_active\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/employee/workhorus"
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2021-12-12\",\r\n    \"from_hour\": \"17:00\",\r\n    \"to_hour\": \"22:00\",\r\n    \"desc\": \"descption\",\r\n    \"is_active\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/employee/workhorus/3"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2021-12-10\",\r\n    \"from_hour\": \"08:00:00\",\r\n    \"to_hour\": \"01:00:00\",\r\n    \"desc\": \"descption\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/employee/workhorus/3"
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlhdCI6MTYzODgyMTI5OCwibmJmIjoxNjM4ODIxMjk4LCJqdGkiOiI0MTU3ZjdlZS0wNmFhLTQ0ZTQtOWNkOS0xYjE1ZDVjYTJmODkiLCJleHAiOjE2Mzg4MjIxOTgsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.ZOVt5JVLDdHpn5L3lA-nFhS2HSsd36WY7B6iCdDX_uE"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "customer",
+			"item": [
+				{
+					"name": "employee",
+					"item": [
+						{
+							"name": "get work time for employe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://127.0.0.1:8000/api/customer/employee/1"
+							},
+							"response": []
+						},
+						{
+							"name": "get all employees",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/customer/employee",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"customer",
+										"employee"
+									],
+									"query": [
+										{
+											"key": "special",
+											"value": "doctor",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "appointment",
+					"item": [
+						{
+							"name": "book appointment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": 2,\r\n    \"desc\": \"first book appointment\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/customer/appointment/"
+							},
+							"response": []
+						},
+						{
+							"name": "get all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": 2,\r\n    \"desc\": \"first book appointment\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/customer/appointment/?date=2021-12-10",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"customer",
+										"appointment",
+										""
+									],
+									"query": [
+										{
+											"key": "date",
+											"value": "2021-12-10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get me appointment",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/customer/appointment/8"
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTYzODgyNzQyNiwibmJmIjoxNjM4ODI3NDI2LCJqdGkiOiI2Mjc2MmNhNC1jYjdjLTQ0MDctOWMzMy1hODE0ZDZlZDQ0NDIiLCJleHAiOjE2Mzg4MjgzMjYsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.wcCk5nSM_e9ZJ0HXOOcRs9BXew9UG5r2CmCu0kKJx7w"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "messanger",
+			"item": [
+				{
+					"name": "Send message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Send Message form employee user to id 1\",\r\n    \"to\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/messenger/"
+					},
+					"response": []
+				},
+				{
+					"name": "get chats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/messenger/"
+					},
+					"response": []
+				},
+				{
+					"name": "get messages chat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/messenger/1"
+					},
+					"response": []
+				},
+				{
+					"name": "get message chat by user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/messenger/user/2"
+					},
+					"response": []
+				},
+				{
+					"name": "update message",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"update message by employee\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/messenger/message/30"
+					},
+					"response": []
+				},
+				{
+					"name": "delete message",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"update message by employee\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/messenger/message/1"
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsImlhdCI6MTYzOTAwMjUwMywibmJmIjoxNjM5MDAyNTAzLCJqdGkiOiJhMjg0ZTdlZS03OWI4LTRhYWQtOTQ2Yy1mODE1ZTE2OGY3OTYiLCJleHAiOjE2MzkwMDM0MDMsInR5cGUiOiJhY2Nlc3MiLCJmcmVzaCI6ZmFsc2V9.N8RnktiiIHFrWLORZq5fVOn7EE46GqvoOOL24laiuv0"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "sotrage",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/storage/cb2b2ecd-a2e4-4d97-8816-cf6db42ffa86.png"
+			},
+			"response": []
+		}
+	]
+}

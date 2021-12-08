@@ -46,6 +46,14 @@ class BaseModel(schema.BaseSchema):
                 'errors': err.args
             })
 
+    def _set(self, relate: str, model: object):
+        self.__setattr__(relate, model)
+        self.save()
+
+    def _append(self, relate: str, model: object):
+        relate_obj = self.__getattribute__(relate)
+        relate_obj.append(model)
+        self.save()
 
     @classmethod
     def get(cls, id) -> object:
@@ -76,6 +84,19 @@ class BaseModel(schema.BaseSchema):
             return 1
         except exc.SQLAlchemyError as err:
             self.session.rollback()
+            raise HTTPException(status_code=403, detail={
+                'ok': False,
+                'errors': err.args
+            })
+
+    @classmethod
+    def commit(cls):
+        """Commit object"""
+        try: 
+            cls.session.commit()
+            return 1
+        except exc.SQLAlchemyError as err:
+            cls.session.rollback()
             raise HTTPException(status_code=403, detail={
                 'ok': False,
                 'errors': err.args

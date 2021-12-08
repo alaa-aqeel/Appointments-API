@@ -1,4 +1,4 @@
-from app.models import User, Role
+from app.models import User, Role, Category
 from core.database import model 
 from core.setting import setting
 
@@ -29,20 +29,30 @@ def create_users():
     ) # admin 
 
 
+def create_category():
+
+    Category.create(name="doctor")
+    Category.create(name="lawyer")
+    Category.create(name="advisory")
+
 def init_reset_database():
 
     model.drop()
     model.migrate()
     
-    try:
-        # create default roles 
-        create_roles()
+    # try:
 
-        # create dome user 
-        create_users()
+    # create defautl category
+    create_category()
 
-    except Exception as err:
-        print(err.args) 
+    # create default roles 
+    create_roles()
+
+    # create dome user 
+    create_users()
+
+    # except Exception as err:
+    #     print(err.args) 
 
 if __name__ == "__main__":
     

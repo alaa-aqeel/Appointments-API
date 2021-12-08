@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from core.database.model import Model, Column, types, relationship, TimeStamp, ForeignKey, backref
 from app.schemas import CustomerReadOnly
+from app.models.message import Message
 
 class Customer(Model, TimeStamp):
 
@@ -25,8 +26,7 @@ class Customer(Model, TimeStamp):
     def set_account(self, user: object) -> None:
         self.user = user
         self.save()
-
-
+    
 
     def __repr__(self) -> str:
 

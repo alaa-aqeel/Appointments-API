@@ -1,4 +1,4 @@
-# Appointment API with fastAPI + PostgreSQL
+# Appointment booking API with Python FastAPI 
 
 __Appointment booking and management API__
 

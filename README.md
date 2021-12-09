@@ -1,6 +1,7 @@
 # Appointment booking API with Python FastAPI 
 
 __Appointment booking and management API__
+between client and any job name like doctor, lawyers and consultants
 
 
 #### [database diagram](https://github.com/AlaaProg/Appointments-API/blob/master/database_diagram.png)
